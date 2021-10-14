@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Book_Search_App.MainPage">
+
+    <StackLayout Orientation="Vertical">
+        <Entry x:Name="BookQueryEntry" 
+               Placeholder="Search for a book or author"
+               TextChanged="BookQueryEntry_TextChanged"
+               HorizontalOptions="Center"/>
+        <Button x:Name="SubmitButton"
+                Clicked="SubmitButton_Clicked"
+                Text="Search"
+                HorizontalOptions="Center"
+                WidthRequest="200"/>
+
+    </StackLayout>
+
+</ContentPage>
