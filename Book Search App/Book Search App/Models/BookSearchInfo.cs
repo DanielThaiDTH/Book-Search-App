@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Book_Search_App
 {
-    class BookInfo
+    public class BookSearchInfo
     {
         public string key { get; set; }
         public IList<string> text { get; set; }
@@ -25,5 +25,23 @@ namespace Book_Search_App
         public IList<string> place { get; set; }
         public IList<string> subject { get; set; }
         public IList<string> time { get; set; }
+
+        public override int GetHashCode()
+        {
+            return key.GetHashCode() + title.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (object.ReferenceEquals(this, obj)) return true;
+            BookSearchInfo other = (BookSearchInfo)obj;
+
+            if (this.GetType() != other.GetType()) {
+                return false;
+            }
+
+            return this.key.Equals(other.key) && this.title.Equals(other.title);
+        }
     }
 }

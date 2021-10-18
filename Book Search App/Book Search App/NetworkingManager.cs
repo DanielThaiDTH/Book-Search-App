@@ -7,14 +7,15 @@ using Newtonsoft.Json;
 
 namespace Book_Search_App
 {
-    enum SearchType
+    public enum SearchType
     {
         REGULAR,
         TITLE,
         AUTHOR,
         ISBN
     }
-    class NetworkingManager
+    /*At least one result will be returned.*/
+    public class NetworkingManager
     {
         private string url = "https://openlibrary.org/search.json?";
         private string limit = "&limit=";
@@ -57,6 +58,7 @@ namespace Book_Search_App
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 SearchResults results = JsonConvert.DeserializeObject<SearchResults>(jsonString);
+                results.SearchTime = DateTime.Now;
                 return results;
             } else {
                 return null;
