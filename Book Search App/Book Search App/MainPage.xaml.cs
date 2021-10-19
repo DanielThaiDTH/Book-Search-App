@@ -28,7 +28,8 @@ namespace Book_Search_App
 
         async private void SubmitButton_Clicked(object sender, EventArgs e)
         {
-            if (query.Length < 4)
+            if (query.Length < 3 || 
+                query.Equals("the", StringComparison.InvariantCultureIgnoreCase))
                 return;
 
             SearchResults results = await openLibraryManager.searchBooks(query, "eng");
