@@ -9,8 +9,8 @@ namespace Book_Search_App
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage(new NetworkingManager(), 
+                                                        new BookInfoManager()));
         }
 
         protected override void OnStart()

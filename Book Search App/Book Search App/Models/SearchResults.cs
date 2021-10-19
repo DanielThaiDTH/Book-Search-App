@@ -14,15 +14,28 @@ namespace Book_Search_App
 
         public DateTime SearchTime { get; set; }
 
+        public string SearchString { get; set; }
+
         SearchResults()
         {
             SearchTime = System.DateTime.Now;
             numFound = 0;
         }
 
+        public void cleanResults()
+        {
+            for (int i = 0; i < docs.Count;) {
+                if (docs[i].author_key is null) {
+                    docs.RemoveAt(i);
+                } else {
+                    i++;
+                }
+            }
+        }
+
         public override int GetHashCode()
         {
-            return SearchTime.GetHashCode() + numFound;
+            return SearchTime.GetHashCode() + SearchString.GetHashCode() + numFound;
         }
 
         public override bool Equals(object obj)
@@ -36,7 +49,8 @@ namespace Book_Search_App
             }
 
             return this.SearchTime.Equals(other.SearchTime) 
-                && this.numFound == other.numFound;
+                && this.numFound == other.numFound
+                && this.SearchString.Equals(other.SearchString);
         }
     }
 }

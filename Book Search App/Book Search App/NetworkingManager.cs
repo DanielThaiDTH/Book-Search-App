@@ -17,8 +17,10 @@ namespace Book_Search_App
     /*At least one result will be returned.*/
     public class NetworkingManager
     {
+        /*Search API building blocks*/
         private string url = "https://openlibrary.org/search.json?";
         private string limit = "&limit=";
+        private string languageOpt = "&language=";
         private int _returnLimit;
         private static readonly int MAXLIMIT = 100;
         public int ReturnLimit {
@@ -33,6 +35,15 @@ namespace Book_Search_App
             get { return _returnLimit; } 
         }
 
+        /*Edition Search API building blocks*/
+        private string edition_query = "https://openlibrary.org/api/books?bibkeys=";
+        private string key_type = ",OLID:";
+        private string query_data_format = "&format=json&jscmd=data";
+
+        /*Work Search API bulding blocks*/
+        private string work_query = "https://openlibrary.org";
+        private string work_query_end = ".json";
+
         public SearchType Option { get; set; }
         private readonly Dictionary<SearchType, string> queryOption;
 
@@ -40,7 +51,7 @@ namespace Book_Search_App
 
         public NetworkingManager() 
         {
-            ReturnLimit = 10;
+            ReturnLimit = 25;
             Option = SearchType.REGULAR;
             queryOption = new Dictionary<SearchType, string>();
             queryOption.Add(SearchType.REGULAR, "q=");
@@ -49,16 +60,63 @@ namespace Book_Search_App
             queryOption.Add(SearchType.ISBN, "isbn=");
         }
 
-        public async Task<SearchResults> searchBooks(string query)
+        public async Task<SearchResults> searchBooks(string query, string lang)
         {
             string queryURL = url + queryOption[Option];
-            queryURL += query + limit + ReturnLimit.ToString();
+            queryURL += query + limit + ReturnLimit.ToString() + languageOpt + lang;
             var response = await client.GetAsync(queryURL);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 SearchResults results = JsonConvert.DeserializeObject<SearchResults>(jsonString);
                 results.SearchTime = DateTime.Now;
+                results.SearchString = query;
+                results.cleanResults();
+                return results;
+            } else {
+                return null;
+            }
+        }
+
+
+        public async Task<IDictionary<string, EditionSearchInfo>> searchEdition(IList<string> edition_keys)
+        {
+            string editonQueryURL = edition_query;
+            bool initial = true;
+
+            foreach (string key in edition_keys) {
+                if (initial) {
+                    editonQueryURL += "OLID:" + key;
+                    initial = false;
+                } else {
+                    editonQueryURL += key_type + key;
+                }
+            }
+
+            editonQueryURL += query_data_format;
+            var response = await client.GetAsync(editonQueryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                IDictionary<string, EditionSearchInfo> results = JsonConvert
+                                                                .DeserializeObject<Dictionary
+                                                                                  <string, EditionSearchInfo>>
+                                                                                  (jsonString);
+                return results;
+            } else {
+                return null;
+            }
+        }
+
+        public async Task<WorkInfo> queryWork(string key)
+        {
+            string workQueryURL = work_query + key + work_query_end;
+            var response = await client.GetAsync(workQueryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                WorkInfo results = JsonConvert.DeserializeObject<WorkInfo>(jsonString);
+                results.readUncleanValues(jsonString);
                 return results;
             } else {
                 return null;

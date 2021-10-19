@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Book_Search_App.MainPage">
+             x:Class="Book_Search_App.MainPage"
+             Title="Book Search App">
 
     <StackLayout Orientation="Vertical">
         <Entry x:Name="BookQueryEntry" 
@@ -13,7 +14,19 @@
                 Text="Search"
                 HorizontalOptions="Center"
                 WidthRequest="200"/>
-
+        <ListView x:Name="SearchResultsList" 
+                  ItemTapped="SearchResultsList_ItemTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding title}" HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding edition_count, StringFormat='{0:N} editions found.'}" HorizontalOptions="End"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 
 </ContentPage>

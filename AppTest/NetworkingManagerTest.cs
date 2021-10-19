@@ -45,7 +45,7 @@ namespace AppTest
             wait(500);
             results = await connector.searchBooks("the lord of the rings");
             Assert.AreEqual(results.numFound, 487);
-            Assert.AreEqual(results.docs.Count, 10);
+            Assert.AreEqual(results.docs.Count, 25);
         }
 
         [TestMethod]
@@ -54,9 +54,9 @@ namespace AppTest
         public async Task ReturnLimitChangeTest()
         {
             wait(500);
-            connector.ReturnLimit = 50;
+            connector.ReturnLimit = 25;
             results = await connector.searchBooks("the lord of the rings");
-            Assert.AreEqual(results.docs.Count, 50);
+            Assert.AreEqual(results.docs.Count, connector.ReturnLimit);
             wait(500);
             connector.ReturnLimit = 1000;
             results = await connector.searchBooks("the lord of the rings");
@@ -64,13 +64,13 @@ namespace AppTest
             wait(500);
             connector.ReturnLimit = 1;
             results = await connector.searchBooks("the lord of the rings");
-            Assert.AreEqual(results.docs.Count, 1);
+            Assert.AreEqual(results.docs.Count, connector.ReturnLimit);
             wait(500);
             connector.ReturnLimit = 0;
             connector.ReturnLimit = -50;
             results = await connector.searchBooks("the lord of the rings");
             Assert.AreEqual(results.docs.Count, 1);
-            connector.ReturnLimit = 10;
+            connector.ReturnLimit = 25;
         }
 
         [TestMethod]

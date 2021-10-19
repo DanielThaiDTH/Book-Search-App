@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Book_Search_App.WorkInfoPage">
+    <ContentPage.Resources>
+        <Style x:Key="HeaderText" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="saveClicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="WorkInfoDisplay" Orientation="Vertical">
+                <Image x:Name="BookCover" 
+                       HorizontalOptions="CenterAndExpand"
+                       HeightRequest="0"
+                       Aspect="AspectFit"/>
+                <Label Text="Title" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="Title_Text"/>
+                <Label Text="Author" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="Author_Text"/>
+                <Label Text="Description" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="Desc"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
