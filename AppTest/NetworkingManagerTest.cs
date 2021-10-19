@@ -44,8 +44,8 @@ namespace AppTest
         {
             wait(500);
             results = await connector.searchBooks("the lord of the rings");
-            Assert.AreEqual(results.numFound, 487);
-            Assert.AreEqual(results.docs.Count, 25);
+            Assert.AreEqual(results.numFound, 351);
+            Assert.AreEqual(results.docs.Count, 22);
         }
 
         [TestMethod]
@@ -55,11 +55,11 @@ namespace AppTest
         {
             wait(500);
             connector.ReturnLimit = 25;
-            results = await connector.searchBooks("the lord of the rings");
+            results = await connector.searchBooks("science");
             Assert.AreEqual(results.docs.Count, connector.ReturnLimit);
             wait(500);
             connector.ReturnLimit = 1000;
-            results = await connector.searchBooks("the lord of the rings");
+            results = await connector.searchBooks("science");
             Assert.AreEqual(results.docs.Count, 100);
             wait(500);
             connector.ReturnLimit = 1;

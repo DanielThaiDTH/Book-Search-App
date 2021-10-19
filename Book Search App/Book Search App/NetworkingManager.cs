@@ -60,7 +60,7 @@ namespace Book_Search_App
             queryOption.Add(SearchType.ISBN, "isbn=");
         }
 
-        public async Task<SearchResults> searchBooks(string query, string lang)
+        public async Task<SearchResults> searchBooks(string query, string lang = "eng")
         {
             string queryURL = url + queryOption[Option];
             queryURL += query + limit + ReturnLimit.ToString() + languageOpt + lang;
