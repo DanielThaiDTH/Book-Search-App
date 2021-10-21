@@ -55,11 +55,11 @@ namespace AppTest
         {
             wait(500);
             connector.ReturnLimit = 25;
-            results = await connector.searchBooks("science");
+            results = await connector.searchBooks("algebra");
             Assert.AreEqual(results.docs.Count, connector.ReturnLimit);
             wait(500);
             connector.ReturnLimit = 1000;
-            results = await connector.searchBooks("science");
+            results = await connector.searchBooks("algebra");
             Assert.AreEqual(results.docs.Count, 100);
             wait(500);
             connector.ReturnLimit = 1;
@@ -96,5 +96,6 @@ namespace AppTest
             Assert.AreNotEqual(rs3.numFound, rs4.numFound);
             connector.Option = SearchType.REGULAR;
         }
+
     }
 }

@@ -4,22 +4,46 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 
 namespace Book_Search_App
 {
     public delegate void WorkInfoDel(WorkInfo info);
+    [Table("Work_Info")]
     public class WorkInfo
     {
-        public string Desc { get; set; }
-        public List<string> Author_List { get; private set; }
-        public string title { get; set; }
-        public string key { get; set; }
-        public IList<int> covers { get; set; }
-        public IList<string> subject_places { get; set; }
-        public string first_publish_date { get; set; }
-        public IList<string> subjects { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public int UID { get; set; }
 
-        WorkInfo()
+        [Unique]
+        public string key { get; set; }
+        public string Desc { get; set; }
+
+
+        [TextBlob("authorlistBlob")]
+        public List<string> Author_List { get; set; }
+        public string authorlistBlob { get; set; }
+
+
+        public string title { get; set; }
+
+        //Stores the cover ids
+        [TextBlob("coversBlob")]
+        public IList<int> covers { get; set; }
+        public string coversBlob { get; set; }
+
+
+        [TextBlob("subjectplacesBlob")]
+        public IList<string> subject_places { get; set; }
+        public string subjectplacesBlob { get; set; }
+        public string first_publish_date { get; set; }
+
+        [TextBlob("subjectsBlob")]
+        public IList<string> subjects { get; set; }
+        public string subjectsBlob { get; set; }
+
+        public WorkInfo()
         {
             Author_List = new List<string>();
         }
@@ -65,10 +89,10 @@ namespace Book_Search_App
         }
 
 
-        public string getImgURL()
+        public string getImgURL(int idx = 0)
         {
             if (covers != null && covers.Count >= 1)
-                return "http://covers.openlibrary.org/b/id/" + covers[0] + ".jpg";
+                return "http://covers.openlibrary.org/b/id/" + covers[idx] + ".jpg";
             else
                 return "";
         }

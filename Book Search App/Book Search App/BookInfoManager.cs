@@ -16,6 +16,10 @@ namespace Book_Search_App
         int cache_count = 0;
         readonly int MAXCACHE = 20;
 
+        //Saved books(works)
+        ObservableCollection<WorkInfo> saved_works;
+        public ObservableCollection<WorkInfo> Saved_Works => saved_works;
+
         public BookInfoManager()
         {
             search_results = new ObservableCollection<BookSearchInfo>();
