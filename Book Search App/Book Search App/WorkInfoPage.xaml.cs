@@ -69,7 +69,7 @@ namespace Book_Search_App
             BookCover.Source = Info.getImgURL();
 
             if (Info.getImgURL().Length > 0)
-                BookCover.HeightRequest = 300;
+                BookCover.HeightRequest = 250;
         }
 
         private void saveClicked(object sender, EventArgs e)

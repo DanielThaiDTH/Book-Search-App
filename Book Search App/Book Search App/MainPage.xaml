@@ -5,23 +5,46 @@
              Title="Book Search App">
 
     <StackLayout Orientation="Vertical">
-        <Entry x:Name="BookQueryEntry" 
+        <StackLayout Orientation="Vertical"
+                     Padding="15"
+                     BackgroundColor="Beige">
+            <Entry x:Name="BookQueryEntry" 
                Placeholder="Search for a book or author"
                TextChanged="BookQueryEntry_TextChanged"
                HorizontalOptions="Center"/>
-        <Button x:Name="SubmitButton"
+            <Button x:Name="SubmitButton"
                 Clicked="SubmitButton_Clicked"
                 Text="Search"
                 HorizontalOptions="Center"
+                BackgroundColor="#b0b0ff"
                 WidthRequest="200"/>
+        </StackLayout>
         <ListView x:Name="SearchResultsList" 
-                  ItemTapped="SearchResultsList_ItemTapped">
+                  ItemTapped="SearchResultsList_ItemTapped"
+                  IsRefreshing="False"
+                  RowHeight="75"
+                  >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding title}" HorizontalOptions="StartAndExpand"/>
-                            <Label Text="{Binding edition_count, StringFormat='{0:N} editions found.'}" HorizontalOptions="End"/>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding title}" 
+                                       TextColor="DarkBlue"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="StartAndExpand"/>
+                                <Label Text="{Binding edition_count, StringFormat='{0:N} editions found.'}" 
+                                       HorizontalOptions="EndAndExpand"
+                                       HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding author_name[0]}" 
+                                       TextColor="DarkMagenta"
+                                       HorizontalOptions="StartAndExpand"
+                                       HorizontalTextAlignment="End"/>
+                                <Label Text="{Binding first_publish_year}" 
+                                       HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

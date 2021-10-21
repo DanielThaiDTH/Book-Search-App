@@ -32,17 +32,24 @@ namespace Book_Search_App
                 query.Equals("the", StringComparison.InvariantCultureIgnoreCase))
                 return;
 
+            if (infoManager.Search_Results != null && infoManager.Search_Results.Count > 0) {
+                SearchResultsList.ScrollTo(infoManager.Search_Results[0], 
+                    ScrollToPosition.Start, false);
+            }
+
+            SearchResultsList.IsRefreshing = true;
             SearchResults results = await openLibraryManager.searchBooks(query, "eng");
             if (results == null){
                 await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
             } else if (results.numFound != 0) {
                 infoManager.SetSearchResults(results);
-                await DisplayAlert("Good", 
-                    "Data found, " + results.numFound.ToString() + " books returned.",
-                    "OK");
+                //await DisplayAlert("Good", 
+                //    "Data found, " + results.numFound.ToString() + " books returned.",
+                //    "OK");
             } else {
                 await DisplayAlert("Error", "Nothing found", "OK");
             }
+            SearchResultsList.IsRefreshing = false;
         }
 
 

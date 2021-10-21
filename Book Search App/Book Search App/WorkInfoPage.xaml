@@ -20,11 +20,13 @@
                        HeightRequest="0"
                        Aspect="AspectFit"/>
                 <Label Text="Title" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Title_Text"/>
+                <Label x:Name="Title_Text" Margin="0,0,0,10"/>
                 <Label Text="Author" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Author_Text"/>
+                <Label x:Name="Author_Text" Margin="0,0,0,10"/>
                 <Label Text="Description" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Desc"/>
+                <Label x:Name="Desc" Margin="0,0,0,10"/>
+                <Label Text="First Publish Date" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="PublishDate"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
