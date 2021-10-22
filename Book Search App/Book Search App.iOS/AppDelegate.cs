@@ -5,6 +5,10 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
+using FFImageLoading.Config;
+using FFImageLoading;
+using System.Net.Http;
+
 namespace Book_Search_App.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
@@ -22,7 +26,15 @@ namespace Book_Search_App.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Configuration config = new Configuration();
+            config.AllowUpscale = true;
+            config.HttpClient = new HttpClient();
+            ImageService.Instance.Initialize(config);
+
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             global::Xamarin.Forms.Forms.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.InitImageSourceHandler();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

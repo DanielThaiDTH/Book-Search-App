@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using FFImageLoading;
 
 namespace Book_Search_App
 {
@@ -16,6 +16,7 @@ namespace Book_Search_App
         WorkInfo info;
         private IList<string> author_list = new List<string>();
         WorkInfoDel cacheWork;
+        
         public WorkInfo Info
         {
             get
@@ -66,10 +67,12 @@ namespace Book_Search_App
                 Desc.Text = "";
             }
             Author_Text.Text = Info.getAuthorStr();
-            BookCover.Source = Info.getImgURL();
 
             if (Info.getImgURL().Length > 0)
-                BookCover.HeightRequest = 250;
+                BookCover.HeightRequest = 275;
+
+            BookCover.Source = Info.getImgURL();
+
         }
 
         private void saveClicked(object sender, EventArgs e)

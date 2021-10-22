@@ -92,7 +92,7 @@ namespace Book_Search_App
         public string getImgURL(int idx = 0)
         {
             if (covers != null && covers.Count >= 1)
-                return "https://covers.openlibrary.org/b/id/" + covers[0] + "-L.jpg";
+                return "https://covers.openlibrary.org/b/id/" + covers[idx] + "-L.jpg";
             else
                 return "";
         }

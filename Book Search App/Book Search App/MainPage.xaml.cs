@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
+
 namespace Book_Search_App
 {
     public partial class MainPage : ContentPage
@@ -28,7 +29,7 @@ namespace Book_Search_App
 
         async private void SubmitButton_Clicked(object sender, EventArgs e)
         {
-            if (query.Length < 3 || 
+            if (query== null || query.Length < 3 || 
                 query.Equals("the", StringComparison.InvariantCultureIgnoreCase))
                 return;
 

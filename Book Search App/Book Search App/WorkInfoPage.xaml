@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Book_Search_App.WorkInfoPage">
+             x:Class="Book_Search_App.WorkInfoPage"
+             xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentPage.Resources>
         <Style x:Key="HeaderText" TargetType="Label">
             <Setter Property="FontAttributes" Value="Bold"/>
@@ -15,10 +16,18 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout x:Name="WorkInfoDisplay" Orientation="Vertical">
-                <Image x:Name="BookCover" 
+                <!--<Image x:Name="BookCover" 
                        HorizontalOptions="CenterAndExpand"
                        HeightRequest="0"
-                       Aspect="AspectFit"/>
+                       Aspect="AspectFit"/>-->
+                <ffimage:CachedImage x:Name="BookCover"
+                                     HorizontalOptions="CenterAndExpand"
+                                     HeightRequest="0"
+                                     WidthRequest="200"
+                                     DownsampleToViewSize="True"
+                                     Aspect="AspectFit"
+                                     Margin="0, 15, 0, 15">
+                </ffimage:CachedImage>
                 <Label Text="Title" Style="{StaticResource HeaderText}"/>
                 <Label x:Name="Title_Text" Margin="0,0,0,10"/>
                 <Label Text="Author" Style="{StaticResource HeaderText}"/>

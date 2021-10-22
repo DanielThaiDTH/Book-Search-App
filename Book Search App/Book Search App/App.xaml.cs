@@ -9,6 +9,7 @@ namespace Book_Search_App
         public App()
         {
             InitializeComponent();
+
             MainPage = new NavigationPage(new MainPage(new NetworkingManager(), 
                                                         new BookInfoManager()));
         }
