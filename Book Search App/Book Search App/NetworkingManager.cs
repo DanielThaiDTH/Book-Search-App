@@ -79,7 +79,7 @@ namespace Book_Search_App
         }
 
 
-        public async Task<IDictionary<string, EditionSearchInfo>> searchEdition(IList<string> edition_keys)
+        public async Task<IDictionary<string, EditionInfo>> searchEdition(IList<string> edition_keys)
         {
             string editonQueryURL = edition_query;
             bool initial = true;
@@ -98,9 +98,9 @@ namespace Book_Search_App
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                IDictionary<string, EditionSearchInfo> results = JsonConvert
+                IDictionary<string, EditionInfo> results = JsonConvert
                                                                 .DeserializeObject<Dictionary
-                                                                                  <string, EditionSearchInfo>>
+                                                                                  <string, EditionInfo>>
                                                                                   (jsonString);
                 return results;
             } else {

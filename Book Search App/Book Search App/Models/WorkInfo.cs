@@ -46,6 +46,8 @@ namespace Book_Search_App
         public WorkInfo()
         {
             Author_List = new List<string>();
+            UID = -1;
+            key = "";
         }
 
         public void addAuthor(string author)
@@ -95,6 +97,25 @@ namespace Book_Search_App
                 return "https://covers.openlibrary.org/b/id/" + covers[idx] + "-L.jpg";
             else
                 return "";
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            WorkInfo other = (WorkInfo)obj;
+
+            if (this.GetType() != other.GetType()) {
+                return false;
+            }
+
+            return this.key.Equals(other.key) && this.UID == other.UID;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() + this.UID;
         }
     }
 }
