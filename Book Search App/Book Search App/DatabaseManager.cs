@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using System.Text;
 using SQLite;
 using SQLiteNetExtensionsAsync.Extensions;
+using SQLiteNetExtensions;
 using Xamarin.Forms;
+using System.Linq.Expressions;
 
 namespace Book_Search_App
 {
@@ -83,7 +85,11 @@ namespace Book_Search_App
             await aconn.DeleteAllAsync<WorkInfo>();
         }
 
-
+        /// <summary>
+        /// Deletes WorkInfo using UID.
+        /// </summary>
+        /// <param name="id">UID</param>
+        /// <returns>Number of rows deleted</returns>
         public async Task<int> DeleteWork(int id)
         {
             try {
@@ -92,6 +98,19 @@ namespace Book_Search_App
                 return 0;
             }
         }
+
+
+        public async Task<int> DeleteWork(string key)
+        {
+            try {
+                string query = "DELETE FROM Work_Info WHERE key='" + key + "';";
+                return await aconn.ExecuteAsync(query);
+            }
+            catch (NotSupportedException e) {
+                return 0;
+            }
+        }
+
 
         //Drops works table. To be used when the table is malformed
         public async void DropWorksTable()
