@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Collections.Generic;
 
 namespace AppTest
 {
@@ -69,8 +70,8 @@ namespace AppTest
             connector.ReturnLimit = 0;
             connector.ReturnLimit = -50;
             results = await connector.searchBooks("the lord of the rings");
-            Assert.AreEqual(results.docs.Count, 1);
             connector.ReturnLimit = 25;
+            Assert.AreEqual(results.docs.Count, 1);
         }
 
         [TestMethod]
@@ -88,14 +89,46 @@ namespace AppTest
             connector.Option = SearchType.ISBN;
             SearchResults rs4 = await connector.searchBooks("Tolkien");
 
+            connector.Option = SearchType.REGULAR;
             Assert.AreNotEqual(rs1.numFound, rs2.numFound);
             Assert.AreNotEqual(rs1.numFound, rs3.numFound);
             Assert.AreNotEqual(rs1.numFound, rs4.numFound);
             Assert.AreNotEqual(rs2.numFound, rs3.numFound);
             Assert.AreNotEqual(rs2.numFound, rs4.numFound);
             Assert.AreNotEqual(rs3.numFound, rs4.numFound);
-            connector.Option = SearchType.REGULAR;
         }
 
+        [TestMethod]
+        public async Task TestSearchEditons()
+        {
+            wait(500);
+            List<string> keys = new List<string> { "OL9158229M", "OL1017798M" };
+            IDictionary<string, EditionSummary> results = await connector.searchEditions(keys);
+
+            ICollection<string> return_keys = results.Keys;
+            Assert.IsTrue(return_keys.Contains("OLID:" + keys[0]));
+            Assert.IsTrue(return_keys.Contains("OLID:" + keys[1]));
+
+            Assert.AreEqual(results["OLID:" + keys[0]].title, "Hobbit; o Senhor dos Anéis");
+
+            Assert.AreEqual(results["OLID:" + keys[1]].title, "The adventures of Tom Sawyer");
+            Assert.AreEqual(results["OLID:" + keys[1]].author_list[0], "Mark Twain");
+            Assert.AreEqual(results["OLID:" + keys[1]].isbn10, "0451526538");
+            Assert.AreEqual(results["OLID:" + keys[1]].publish_places_list[0], "New York");
+        }
+
+        [TestMethod]
+        public async Task QueryEditionTest()
+        {
+            wait(500);
+            string query = "/books/OL1017798M";
+            EditionInfo info = await connector.queryEdition(query);
+
+            Assert.AreEqual(info.isbn10, "0451526538");
+            Assert.AreEqual(info.publish_places[0], "New York");
+            Assert.AreEqual(info.genres[0], "Fiction.");
+            Assert.AreEqual(info.covers[0], 11403183);
+            Assert.AreEqual(info.title, "The adventures of Tom Sawyer");
+        }
     }
 }

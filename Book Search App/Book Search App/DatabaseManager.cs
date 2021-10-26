@@ -112,7 +112,7 @@ namespace Book_Search_App
         }
 
 
-        //Drops works table. To be used when the table is malformed
+        //Drops works table. To be used when the table is malformed.
         public async void DropWorksTable()
         {
             await aconn.DropTableAsync<WorkInfo>();

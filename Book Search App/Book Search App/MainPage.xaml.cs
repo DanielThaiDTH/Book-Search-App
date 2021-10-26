@@ -44,9 +44,6 @@ namespace Book_Search_App
                 await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
             } else if (results.numFound != 0) {
                 infoManager.SetSearchResults(results);
-                //await DisplayAlert("Good", 
-                //    "Data found, " + results.numFound.ToString() + " books returned.",
-                //    "OK");
             } else {
                 await DisplayAlert("Error", "Nothing found", "OK");
             }

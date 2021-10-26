@@ -40,9 +40,9 @@ namespace Book_Search_App
         private string key_type = ",OLID:";
         private string query_data_format = "&format=json&jscmd=data";
 
-        /*Work Search API bulding blocks*/
-        private string work_query = "https://openlibrary.org";
-        private string work_query_end = ".json";
+        /*Specific Search API building blocks*/
+        private string query_base = "https://openlibrary.org";
+        private string query_end = ".json";
 
         public SearchType Option { get; set; }
         private readonly Dictionary<SearchType, string> queryOption;
@@ -78,8 +78,8 @@ namespace Book_Search_App
             }
         }
 
-
-        public async Task<IDictionary<string, EditionInfo>> searchEdition(IList<string> edition_keys)
+        //Keys in returned dictionary are in the format of 'OLID:key'.
+        public async Task<IDictionary<string, EditionSummary>> searchEditions(IList<string> edition_keys)
         {
             string editonQueryURL = edition_query;
             bool initial = true;
@@ -98,19 +98,41 @@ namespace Book_Search_App
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                IDictionary<string, EditionInfo> results = JsonConvert
+                IDictionary<string, EditionSummary> results = JsonConvert
                                                                 .DeserializeObject<Dictionary
-                                                                                  <string, EditionInfo>>
+                                                                                  <string, EditionSummary>>
                                                                                   (jsonString);
+                foreach (KeyValuePair<string,EditionSummary> ed in results) {
+                    ed.Value.FlattenAttributes();
+                }
                 return results;
             } else {
                 return null;
             }
         }
 
+
+        //Keys should have the relative path attached to it
+        public async Task<EditionInfo> queryEdition(string key)
+        {
+            string editionQueryURL = query_base + key + query_end;
+            var response = await client.GetAsync(editionQueryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                EditionInfo result = JsonConvert.DeserializeObject<EditionInfo>(jsonString);
+                result.FlattenAttributes();
+                return result;
+            } else {
+                return null;
+            }
+        }
+
+
+        //Keys should have the relative path attached to it
         public async Task<WorkInfo> queryWork(string key)
         {
-            string workQueryURL = work_query + key + work_query_end;
+            string workQueryURL = query_base + key + query_end;
             var response = await client.GetAsync(workQueryURL);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
