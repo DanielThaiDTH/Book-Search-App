@@ -30,11 +30,22 @@ namespace Book_Search_App
             }
         }
 
+        BookInfoManager infoManager;
+
         public App()
         {
             InitializeComponent();
+            infoManager = new BookInfoManager();
 
-            MainPage = new NavigationPage(new MainPage(new BookInfoManager()));
+            MainPage = new NavigationPage(new MainPage(infoManager));
+            ToolbarItem savedPageNav = new ToolbarItem { Text = "Saved Books/Authors" };
+            MainPage.ToolbarItems.Add(savedPageNav);
+            savedPageNav.Clicked += SavedPageNav_Clicked;
+        }
+
+        private void SavedPageNav_Clicked(object sender, EventArgs e)
+        {
+            MainPage.Navigation.PushAsync(new SavedPage(infoManager));
         }
 
         protected override void OnStart()

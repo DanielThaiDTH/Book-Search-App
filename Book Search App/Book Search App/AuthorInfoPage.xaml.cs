@@ -39,6 +39,19 @@ namespace Book_Search_App
             GetInfo(key);
         }
 
+        public AuthorInfoPage(Author a, BookInfoManager bim)
+        {
+            InitializeComponent();
+            infoManager = bim;
+            author = a;
+            SetDisplay();
+
+            if (infoManager.Authors.Contains(author))
+                IsSaved = true;
+            else
+                IsSaved = false;
+        }
+        
         private async void GetInfo(string key)
         {
             author = await App.NetManager.queryAuthor(key);
