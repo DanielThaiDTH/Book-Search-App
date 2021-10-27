@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Book_Search_App.AuthorInfoPage">
+    <ContentPage.Resources>
+        <Style x:Key="HeaderText" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal">
+                <ffimage:CachedImage x:Name="AuthorImage"
+                                         HorizontalOptions="CenterAndExpand"
+                                         HeightRequest="0"
+                                         WidthRequest="250"
+                                         DownsampleToViewSize="True"
+                                         Aspect="AspectFit"
+                                         Margin="0, 15, 0, 15">
+                </ffimage:CachedImage>
+                <StackLayout>
+                    <Button x:Name="SaveButton" Text="Save"
+                                Clicked="SaveClicked"
+                                TextColor="white"
+                                BackgroundColor="DarkTurquoise"/>
+                    <Button x:Name="DeleteButton" Text="Delete"
+                                Clicked="DeleteClicked"
+                                TextColor="White"
+                                BackgroundColor="Red"/>
+                </StackLayout>
+            </StackLayout>
+            <Label Text="Name" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="Name_Text" Margin="0,0,0,10"/>
+            <Label Text="Date of Birth" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="DOB_Text" Margin="0,0,0,10"/>
+            <Label x:Name="DODHeader" Text="Date of Death" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="DOD_Text" Margin="0,0,0,10"/>
+            <Label Text="Biography" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="Bio_Text"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

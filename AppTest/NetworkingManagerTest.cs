@@ -139,5 +139,28 @@ namespace AppTest
             AuthorSearchResults results = await connector.searchAuthors(query);
             Assert.AreEqual(results.numFound, 29);
         }
+
+        [TestMethod]
+        public async Task QueryAuthorTest()
+        {
+            wait(500);
+            string query = "OL18319A";
+            Author result = await connector.queryAuthor(query);
+            Assert.AreEqual(result.name, "Mark Twain");
+            Assert.AreEqual(result.photos.Count, 2);
+            Assert.AreEqual(result.photos[0], 11564855);
+            Assert.AreEqual(result.GetImgURL(), "https://covers.openlibrary.org/a/id/11564855.jpg");
+        }
+
+        [TestMethod]
+        public async Task SearchEditionsTest()
+        {
+            wait(500);
+            string query = "marx"; //Has a large amount of editions
+            BookSearchResults results = await connector.searchBooks(query);
+            IList<string> keys = results.docs[1].edition_key;
+            IDictionary<string, EditionSummary> found = await connector.searchEditions(keys);
+            Assert.AreEqual(NetworkingManager.QUERYLIMIT, found.Count);
+        }
     }
 }

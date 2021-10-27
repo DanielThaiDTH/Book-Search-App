@@ -26,7 +26,7 @@
                         <Button x:Name="SaveButton" Text="Save"
                                 Clicked="saveClicked"
                                 TextColor="white"
-                                BackgroundColor="Aquamarine"/>
+                                BackgroundColor="DarkTurquoise"/>
                         <Button x:Name="DeleteButton" Text="Delete"
                                 Clicked="deleteClicked"
                                 TextColor="White"

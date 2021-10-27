@@ -44,8 +44,6 @@ namespace Book_Search_App
         }
 
         
-
-
         public WorkInfoPage(string key, 
                             IList<string> authors,
                             IList<string> edition_keys,

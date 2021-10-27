@@ -59,7 +59,9 @@ namespace Book_Search_App
             } else {
                 SearchResultsList.IsVisible = false;
                 AuthorSearchList.IsVisible = true;
+                AuthorSearchList.IsRefreshing = true;
                 AuthorSearchResults results = await App.NetManager.searchAuthors(query);
+                AuthorSearchList.IsRefreshing = false;
                 if (results == null) {
                     await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
                 } else if (results.numFound != 0) {
@@ -84,6 +86,12 @@ namespace Book_Search_App
                     ));
             }
         }
+
+        private void AuthorSearchList_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Navigation.PushAsync(new AuthorInfoPage((e.Item as Author).key, infoManager));
+        }
+
 
         private void SettingsButton_Clicked(object sender, EventArgs e)
         {
@@ -115,5 +123,6 @@ namespace Book_Search_App
             CheckBox check = (CheckBox)sender;
             isAuthorSearch = check.IsChecked;
         }
-    }
+
+    }//Class
 }

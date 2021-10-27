@@ -32,22 +32,28 @@ namespace Book_Search_App
             return new ObservableCollection<WorkInfo>(savedWorks);
         }
 
+        public async Task<ObservableCollection<Author>> InitAuthorsTable()
+        {
+            await aconn.CreateTableAsync<Author>();
+            var saved = await ReadOperations.GetAllWithChildrenAsync<Author>(aconn);
+            return new ObservableCollection<Author>(saved);
+        }
 
         /// <summary>
-        ///Async returning the number of rows changed with the given WorkInfo
+        ///Async returning the number of rows changed with the given type
         /// </summary>
-        /// <param name="info">WorkInfo</param>
+        /// <param name="T">Type</param>
         /// <returns>Number of rows updated as an int</returns>
-        public async void UpdateSavedWorks(WorkInfo info)
+        public async void UpdateInfo<T>(T info)
         {
             await aconn.UpdateWithChildrenAsync(info);
         }
 
 
         ///</summary>
-        ///Adds information about a work to the DB. Does nothing if it already exists.
+        ///Adds information about a book/author to the DB. Does nothing if it already exists.
         ///<summary>
-        public async Task<bool> AddSavedWork(WorkInfo info)
+        public async Task<bool> AddInfo<T>(T info)
         {
             try {
                 await aconn.InsertWithChildrenAsync(info);
@@ -59,7 +65,7 @@ namespace Book_Search_App
 
 
         /// <summary>
-        /// Gets the saved work with the givne OpenLibrary key.
+        /// Gets the saved work with the given OpenLibrary key.
         /// </summary>
         /// <param name="key"></param>
         /// <returns>WorkInfo</returns>
@@ -79,11 +85,43 @@ namespace Book_Search_App
             }
         }
 
+        /// <summary>
+        /// Finds an author using the given OpenLibrary key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<Author> GetSavedAuthor(string key)
+        {
+            try {
+                var results = await aconn.GetAllWithChildrenAsync<Author>(a => a.key.Equals(key));
+
+                if (results.Count == 0)
+                    return null;
+
+                return results[0];
+            }
+            catch (SQLiteException se) {
+                return null;
+            }
+            catch (InvalidOperationException ie) {
+                return null;
+            }
+        }
+
+
+
         //Deletes all saved data about works
-        public async void DeleteWorksTable()
+        public async Task DeleteWorksTable()
         {
             await aconn.DeleteAllAsync<WorkInfo>();
         }
+
+        //Deletes all saved data about authors
+        public async Task DeleteAuthorsTable()
+        {
+            await aconn.DeleteAllAsync<Author>();
+        }
+
 
         /// <summary>
         /// Deletes WorkInfo using UID.
@@ -99,7 +137,11 @@ namespace Book_Search_App
             }
         }
 
-
+        /// <summary>
+        /// Deletes work using OpenLibrary key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public async Task<int> DeleteWork(string key)
         {
             try {
@@ -112,10 +154,49 @@ namespace Book_Search_App
         }
 
 
+        /// <summary>
+        /// Deletes author using UID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> DeleteAuthor(int id)
+        {
+            try {
+                return await aconn.DeleteAsync<Author>(id);
+            }
+            catch (NotSupportedException e) {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Delete author using OpenLibrary key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<int> DeleteAuthor(string key)
+        {
+            try {
+                string query = "DELETE FROM Author WHERE key='" + key + "';";
+                return await aconn.ExecuteAsync(query);
+            }
+            catch (NotSupportedException e) {
+                return 0;
+            }
+        }
+
+
+
         //Drops works table. To be used when the table is malformed.
-        public async void DropWorksTable()
+        public async Task DropWorksTable()
         {
             await aconn.DropTableAsync<WorkInfo>();
+        }
+
+        //Drops authors table. To be used when the table is malformed.
+        public async Task DropAuthorsTable()
+        {
+            await aconn.DropTableAsync<Author>();
         }
     }
 }

@@ -19,17 +19,17 @@ namespace Book_Search_App
     public class NetworkingManager :INotifyPropertyChanged
     {
         /*Search API building blocks*/
-        private string url = "https://openlibrary.org/search.json?";
-        private string limit = "&limit=";
-        private string languageOpt = "&language=";
-        private int _returnLimit;
+        private readonly string url = "https://openlibrary.org/search.json?";
+        private readonly string limit = "&limit=";
+        private readonly string languageOpt = "&language=";
         private static readonly int MAXLIMIT = 100;
 
         /*Author search API building blocks*/
-        private string authorURL = "https://openlibrary.org/search/authors.json?";
+        private readonly string authorURL = "https://openlibrary.org/search/authors.json?";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private int _returnLimit;
         public int ReturnLimit {
             set {
                 if (value <= 0)
@@ -44,12 +44,14 @@ namespace Book_Search_App
 
         /*Edition Search API building blocks*/
         private string edition_query = "https://openlibrary.org/api/books?bibkeys=";
-        private string key_type = ",OLID:";
-        private string query_data_format = "&format=json&jscmd=data";
+        private readonly string key_type = ",OLID:";
+        private readonly string query_data_format = "&format=json&jscmd=data";
+        public const int QUERYLIMIT = 220;
+
 
         /*Specific Search API building blocks*/
-        private string query_base = "https://openlibrary.org";
-        private string query_end = ".json";
+        private readonly string query_base = "https://openlibrary.org";
+        private readonly string query_end = ".json";
 
         private SearchType _option;
         public SearchType Option 
@@ -133,19 +135,29 @@ namespace Book_Search_App
         }
 
 
-        //Keys in returned dictionary are in the format of 'OLID:key'.
+        /// <summary> 
+        /// Keys in returned dictionary are in the format of 'OLID:key'. Limited to 220 editions, 
+        /// otherwise the request is bad.
+        /// </summary>
+        /// <param name="edition_keys"></param>
+        /// <returns></returns>
         public async Task<IDictionary<string, EditionSummary>> searchEditions(IList<string> edition_keys)
         {
+            int count = 0;
             string editonQueryURL = edition_query;
             bool initial = true;
 
+
             foreach (string key in edition_keys) {
+                if (count >= QUERYLIMIT)
+                    break;
                 if (initial) {
                     editonQueryURL += "OLID:" + key;
                     initial = false;
                 } else {
                     editonQueryURL += key_type + key;
                 }
+                count++;
             }
 
             editonQueryURL += query_data_format;
@@ -164,8 +176,11 @@ namespace Book_Search_App
             }
         }
 
-
-        //Keys should have the relative path attached to it
+        /// <summary>
+        ///Keys should have the relative path attached to it.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public async Task<EditionInfo> queryEdition(string key)
         {
             string editionQueryURL = query_base + key + query_end;
@@ -182,7 +197,11 @@ namespace Book_Search_App
         }
 
 
-        //Keys should have the relative path attached to it
+        /// <summary> 
+        ///Keys should have the relative path attached to it.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public async Task<WorkInfo> queryWork(string key)
         {
             string workQueryURL = query_base + key + query_end;
@@ -193,6 +212,22 @@ namespace Book_Search_App
                 WorkInfo results = JsonConvert.DeserializeObject<WorkInfo>(jsonString);
                 results.readUncleanValues(jsonString);
                 return results;
+            } else {
+                return null;
+            }
+        }
+
+
+        public async Task<Author> queryAuthor(string key)
+        {
+            string queryURL = query_base + "/authors/" + key + query_end;
+            var response = await client.GetAsync(queryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                Author result = JsonConvert.DeserializeObject<Author>(jsonString);
+                result.readUncleanValues(jsonString);
+                return result;
             } else {
                 return null;
             }

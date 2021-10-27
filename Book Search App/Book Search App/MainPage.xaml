@@ -110,7 +110,9 @@
             </ListView.ItemTemplate>
         </ListView>
         <ListView x:Name="AuthorSearchList"
-                      IsRefreshing="False">
+                  IsRefreshing="False"
+                  ItemTapped="AuthorSearchList_ItemTapped"
+                  RowHeight="50">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -119,10 +121,11 @@
                                    TextColor="DarkBlue"
                                    FontAttributes="Bold"
                                    FlexLayout.AlignSelf="Start"/>
+                            <Label Text="" FlexLayout.Grow="0.7"/>
                             <StackLayout Orientation="Vertical"
                                          FlexLayout.AlignSelf="End">
-                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}"/>
-                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}"/>
+                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}" HorizontalTextAlignment="End"/>
+                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}" HorizontalTextAlignment="End"/>
                             </StackLayout>
                         </FlexLayout>
                     </ViewCell>

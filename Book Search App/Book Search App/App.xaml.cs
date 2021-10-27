@@ -7,7 +7,6 @@ namespace Book_Search_App
     public partial class App : Application
     {
         static NetworkingManager netManager;
-
         public static NetworkingManager NetManager
         {
             get
@@ -16,6 +15,18 @@ namespace Book_Search_App
                     netManager = new NetworkingManager();
                 }
                 return netManager;
+            }
+        }
+
+        static DatabaseManager database;
+        public static DatabaseManager Database
+        {
+            get
+            {
+                if (database == null) {
+                    database = new DatabaseManager();
+                }
+                return database;
             }
         }
 

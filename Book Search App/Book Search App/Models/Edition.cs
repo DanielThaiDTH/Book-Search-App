@@ -8,6 +8,7 @@ namespace Book_Search_App
 {
     public class Edition
     {
+        [Unique]
         public string key { get; set; }
         public string title { get; set; }
         public int number_of_pages { get; set; }

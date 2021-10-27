@@ -24,8 +24,12 @@ namespace AppTest
         [TestMethod]
         public async Task InitializationTest()
         {
+            await dbm.DropWorksTable();
+            await dbm.DropAuthorsTable();
             await dbm.InitWorksTable();
-            dbm.DeleteWorksTable();
+            await dbm.InitAuthorsTable();
+            await dbm.DeleteWorksTable();
+            await dbm.DeleteAuthorsTable();
         }
 
         [TestMethod]
@@ -37,8 +41,8 @@ namespace AppTest
                 covers = new List<int> { 1, 2, 3 } 
             };
 
-            Assert.IsTrue(await dbm.AddSavedWork(info));
-            Assert.IsFalse(await dbm.AddSavedWork(info)); //Should fail, work already in DB
+            Assert.IsTrue(await dbm.AddInfo(info));
+            Assert.IsFalse(await dbm.AddInfo(info)); //Should fail, work already in DB
         }
 
         [TestMethod]
@@ -57,14 +61,14 @@ namespace AppTest
                 covers = new List<int> { 1, 2, 3 }
             };
 
-            await dbm.AddSavedWork(info);
+            await dbm.AddInfo(info);
 
             //Primary key auto updates, so can be used immediately after adding
             Assert.AreEqual(1, await dbm.DeleteWork(info.UID));
             Assert.AreEqual(0, await dbm.DeleteWork(second_info.UID));
 
             //Test deletion using OpenLibrary key
-            await dbm.AddSavedWork(second_info);
+            await dbm.AddInfo(second_info);
             Assert.AreEqual(1, await dbm.DeleteWork(second_info.key));
 
             //Info no longer in table
@@ -82,8 +86,8 @@ namespace AppTest
                 covers = new List<int> { 1, 2, 3 }
             };
 
-            Assert.IsTrue(await dbm.AddSavedWork(info));
-            Assert.IsFalse(await dbm.AddSavedWork(info)); //Re-adding will fail
+            Assert.IsTrue(await dbm.AddInfo(info));
+            Assert.IsFalse(await dbm.AddInfo(info)); //Re-adding will fail
             Assert.AreEqual(info, await dbm.GetSavedWork(info.key));
             Assert.AreNotEqual<WorkInfo>(new WorkInfo(), await dbm.GetSavedWork(info.key));
             await dbm.DeleteWork(info.UID);
@@ -101,7 +105,7 @@ namespace AppTest
                 subject_places = new List<string> { }
             };
 
-            await dbm.AddSavedWork(info);
+            await dbm.AddInfo(info);
             WorkInfo copy = await dbm.GetSavedWork(info.key);
             Assert.AreEqual(info.covers.Count, copy.covers.Count);
             Assert.AreEqual(info.subjects.Count, copy.subjects.Count);
@@ -120,10 +124,31 @@ namespace AppTest
             }
         }
 
+        /*Authors Portion*/
+        [TestMethod]
+        public async Task AddGetAuthorsTest()
+        {
+            Author a = new Author
+            {
+                key = "/1",
+                name = "test",
+                photos = new List<int> { 1, 2, 3 }
+            };
+
+            Assert.IsTrue(await dbm.AddInfo(a));
+            Assert.IsFalse(await dbm.AddInfo(a));
+            Author copy = await dbm.GetSavedAuthor("/1");
+            Assert.AreEqual(copy.name, a.name);
+            Assert.AreEqual(copy.photos.Count, a.photos.Count);
+            Assert.AreEqual(copy.photos[0], a.photos[0]);
+        }
+
+
         [ClassCleanup]
         public static void cleanup()
         {
             dbm.DeleteWorksTable();
+            dbm.DeleteAuthorsTable();
         }
     }
 }
