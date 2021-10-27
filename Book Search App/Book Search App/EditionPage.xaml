@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Book_Search_App.EditionPage">
+    <ContentPage.Resources>
+        <Style x:Key="HeaderText" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <ffimage:CachedImage x:Name="BookCover"
+                                         HorizontalOptions="CenterAndExpand"
+                                         HeightRequest="0"
+                                         WidthRequest="200"
+                                         DownsampleToViewSize="True"
+                                         Aspect="AspectFit"
+                                         Margin="0, 15, 0, 15">
+            </ffimage:CachedImage>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Title" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="TitleText"/>
+            </StackLayout>
+            <Label Text="Publishers" Style="{StaticResource HeaderText}"/>
+            <Label Text="Published At" Style="{StaticResource HeaderText}"/>
+            <Label Text="Number Of Pages" Style="{StaticResource HeaderText}"/>
+            <Label Text="Publish Date" Style="{StaticResource HeaderText}"/>
+            <Label Text="Number Of Pages" Style="{StaticResource HeaderText}"/>
+            <Label Text="Authors" Style="{StaticResource HeaderText}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

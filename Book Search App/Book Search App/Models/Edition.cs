@@ -30,11 +30,16 @@ namespace Book_Search_App
         public string isbn10 { get; set; }
         public string isbn13 { get; set; }
 
+        public DateTime addTime { get; set; }
+
 
         //Call this after deserialization to flatten attributes
         public virtual void FlattenAttributes()
         {
             IList<string> temp;
+
+            if (identifiers == null)
+                return;
 
             if (identifiers.TryGetValue("librarything", out temp))
                 librarything = temp[0];
@@ -49,5 +54,24 @@ namespace Book_Search_App
             if (identifiers.TryGetValue("isbn_13", out temp))
                 isbn13 = temp[0];
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            Edition other = (Edition)obj;
+
+            if (GetType() != other.GetType()) {
+                return false;
+            }
+
+            return key.Equals(other.key);
+        }
+
+        public override int GetHashCode()
+        {
+            return key.GetHashCode();
+        }
+
     }
 }

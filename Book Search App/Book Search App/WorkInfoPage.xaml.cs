@@ -6,78 +6,149 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using FFImageLoading;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Book_Search_App
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WorkInfoPage : ContentPage
+    public partial class WorkInfoPage : ContentPage, INotifyPropertyChanged
     {
-        NetworkingManager openLibraryManager;
-        WorkInfo info;
+        readonly BookInfoManager infoManager;
         private IList<string> author_list = new List<string>();
-        WorkInfoDel cacheWork;
-        
+
+        WorkInfo info;
         public WorkInfo Info
         {
-            get
-            {
-                return info;
-            }
-        }
-        public WorkInfoPage(NetworkingManager nm, string key, IList<string> authors, WorkInfoDel infoCacheFunc)
-        {
-            InitializeComponent();
-            cacheWork = infoCacheFunc;
-            openLibraryManager = nm;
-            author_list = authors;
-            getInfo(key);
+            get { return info; }
         }
 
-        public WorkInfoPage(NetworkingManager nm, WorkInfo old_info, WorkInfoDel infoCacheFunc)
+        new public event PropertyChangedEventHandler PropertyChanged;
+        bool _isSaved = false;
+        public bool IsSaved
+        {
+            get { return _isSaved; }
+            set
+            {
+                DeleteButton.IsEnabled = value;
+                SaveButton.IsEnabled = !value;
+
+                if (value == _isSaved)
+                    return;
+
+                _isSaved = value;
+
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsSaved)));
+            }
+        }
+
+        
+
+
+        public WorkInfoPage(string key, 
+                            IList<string> authors,
+                            IList<string> edition_keys,
+                            BookInfoManager bim)
         {
             InitializeComponent();
-            cacheWork = infoCacheFunc;
-            openLibraryManager = nm;
+            infoManager = bim;
+            author_list = authors;
+
+            getInfo(key, edition_keys);
+        }
+
+        public WorkInfoPage(WorkInfo old_info, BookInfoManager bim)
+        {
+            InitializeComponent();
+            infoManager = bim;
             info = old_info;
-            cacheWork(info);
+            infoManager.CacheWorkInfo(info);
+            if (infoManager.Saved_Works.Contains(info))
+                IsSaved = true;
+            else
+                IsSaved = false;
+
             setDisplay();
         }
 
-        private async void getInfo(string key)
+        private async void getInfo(string key, IList<string> edition_keys)
         {
-            info = await openLibraryManager.queryWork(key);
+            info = await App.NetManager.queryWork(key);
+            if (info.IsRedirect())
+                info = await App.NetManager.queryWork(info.GetRedirect());
 
             foreach(string author in author_list) {
                 info.addAuthor(author);
             }
 
+            foreach(string ed_key in edition_keys) {
+                info.Editions_Keys.Add(ed_key);
+            }
+
             setDisplay();
-            cacheWork(info);
+
+            if (infoManager.Saved_Works.Contains(info))
+                IsSaved = true;
+            else
+                IsSaved = false;
+            
+            infoManager.CacheWorkInfo(info);
         }
 
 
         private void setDisplay()
         {
             WorkInfoDisplay.BindingContext = Info;
-            Title_Text.Text = Info.title;
-            try {
-                Desc.Text = Info.Desc;
-            }
-            catch (NullReferenceException e) {
-                Desc.Text = "";
-            }
+            Title_Text.Text = Info.title??"";
+            Desc.Text = Info.Desc ?? "";
             Author_Text.Text = Info.getAuthorStr();
+
+            string subject_string = "";
+            int subjects_count = Info.subjects?.Count ?? 0;
+
+            for (int i = 0; i < subjects_count; i++) {
+                if (i > 0)
+                    subject_string += ", ";
+
+                subject_string += Info.subjects[i];
+            }
+
+            Subject_Text.Text = subject_string;
+            PublishDate.Text = Info.first_publish_date ?? "";
+
 
             if (Info.getImgURL().Length > 0)
                 BookCover.HeightRequest = 275;
 
             BookCover.Source = Info.getImgURL();
-
         }
 
-        private void saveClicked(object sender, EventArgs e)
+        public void saveClicked(object sender, EventArgs e)
         {
-            //cacheWork(info);
+            if (!infoManager.Saved_Works.Contains(info)) {
+                info.AddTime = DateTime.Now;
+                infoManager.Saved_Works.Add(info);
+                IsSaved = true;
+                DisplayAlert(info.title + " Saved", "This book has been successfully saved.", "OK");
+            } else {
+                IsSaved = true;
+            }
+        }
+
+        public void deleteClicked(object sender, EventArgs e)
+        {
+            if (infoManager.Saved_Works.Contains(info)) {
+                infoManager.Saved_Works.Remove(info);
+                info.AddTime = DateTime.MinValue;
+                DisplayAlert(info.title + " Deleted", "This book has been removed from your saved books list.", "OK");
+                IsSaved = false;
+            }
+        }
+
+        private void ViewEditionButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new EditionListPage(info.Editions_Keys, infoManager));
         }
     }//class
 }

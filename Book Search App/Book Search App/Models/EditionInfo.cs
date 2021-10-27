@@ -41,5 +41,13 @@ namespace Book_Search_App
             isbn10 = isbn_10?[0];
             isbn13 = isbn_13?[0];
         }
+
+        public string getImgURL(int idx = 0)
+        {
+            if (covers != null && covers.Count >= 1)
+                return "https://covers.openlibrary.org/b/id/" + covers[idx] + "-L.jpg";
+            else
+                return "";
+        }
     }
 }

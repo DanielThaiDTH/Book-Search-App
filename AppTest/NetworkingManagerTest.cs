@@ -12,7 +12,7 @@ namespace AppTest
     [TestClass]
     public class NetworkingManagerTest
     {
-        private static SearchResults results = null;
+        private static BookSearchResults results = null;
         private static NetworkingManager connector = null;
 
         [ClassInitialize]
@@ -78,16 +78,16 @@ namespace AppTest
         public async Task SearchOptionTest()
         {
             wait(500);
-            SearchResults rs1 = await connector.searchBooks("Tolkien");
+            BookSearchResults rs1 = await connector.searchBooks("Tolkien");
             wait(500);
             connector.Option = SearchType.AUTHOR;
-            SearchResults rs2 = await connector.searchBooks("Tolkien");
+            BookSearchResults rs2 = await connector.searchBooks("Tolkien");
             wait(500);
             connector.Option = SearchType.TITLE;
-            SearchResults rs3 = await connector.searchBooks("Tolkien");
+            BookSearchResults rs3 = await connector.searchBooks("Tolkien");
             wait(500);
             connector.Option = SearchType.ISBN;
-            SearchResults rs4 = await connector.searchBooks("Tolkien");
+            BookSearchResults rs4 = await connector.searchBooks("Tolkien");
 
             connector.Option = SearchType.REGULAR;
             Assert.AreNotEqual(rs1.numFound, rs2.numFound);
@@ -129,6 +129,15 @@ namespace AppTest
             Assert.AreEqual(info.genres[0], "Fiction.");
             Assert.AreEqual(info.covers[0], 11403183);
             Assert.AreEqual(info.title, "The adventures of Tom Sawyer");
+        }
+
+        [TestMethod]
+        public async Task SearchAuthorTest()
+        {
+            wait(500);
+            string query = "tolkien";
+            AuthorSearchResults results = await connector.searchAuthors(query);
+            Assert.AreEqual(results.numFound, 29);
         }
     }
 }

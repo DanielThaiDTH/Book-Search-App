@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Book_Search_App
 {
@@ -15,7 +16,7 @@ namespace Book_Search_App
         ISBN
     }
     /*At least one result will be returned.*/
-    public class NetworkingManager
+    public class NetworkingManager :INotifyPropertyChanged
     {
         /*Search API building blocks*/
         private string url = "https://openlibrary.org/search.json?";
@@ -23,6 +24,12 @@ namespace Book_Search_App
         private string languageOpt = "&language=";
         private int _returnLimit;
         private static readonly int MAXLIMIT = 100;
+
+        /*Author search API building blocks*/
+        private string authorURL = "https://openlibrary.org/search/authors.json?";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int ReturnLimit {
             set {
                 if (value <= 0)
@@ -44,8 +51,36 @@ namespace Book_Search_App
         private string query_base = "https://openlibrary.org";
         private string query_end = ".json";
 
-        public SearchType Option { get; set; }
+        private SearchType _option;
+        public SearchType Option 
+        {
+            get { return _option; } 
+            set
+            {
+                if (value == _option)
+                    return;
+
+                _option = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(Option)));
+            }
+        }
         private readonly Dictionary<SearchType, string> queryOption;
+
+        public bool _authorSearchOption = false;
+        public bool AuthorSearchOption
+        {
+            get { return _authorSearchOption; }
+            set 
+            {
+                if (value == _authorSearchOption)
+                    return;
+
+                _authorSearchOption = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(AuthorSearchOption)));
+            }
+        }
 
         HttpClient client = new HttpClient();
 
@@ -60,7 +95,7 @@ namespace Book_Search_App
             queryOption.Add(SearchType.ISBN, "isbn=");
         }
 
-        public async Task<SearchResults> searchBooks(string query, string lang = "eng")
+        public async Task<BookSearchResults> searchBooks(string query, string lang = "eng")
         {
             string queryURL = url + queryOption[Option];
             queryURL += query + limit + ReturnLimit.ToString() + languageOpt + lang;
@@ -68,7 +103,7 @@ namespace Book_Search_App
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                SearchResults results = JsonConvert.DeserializeObject<SearchResults>(jsonString);
+                BookSearchResults results = JsonConvert.DeserializeObject<BookSearchResults>(jsonString);
                 results.SearchTime = DateTime.Now;
                 results.SearchString = query;
                 results.cleanResults(); //Remove books with no authors
@@ -77,6 +112,26 @@ namespace Book_Search_App
                 return null;
             }
         }
+
+
+        public async Task<AuthorSearchResults> searchAuthors(string query)
+        {
+            string queryURL = authorURL + "q=" + query;
+
+            var response = await client.GetAsync(queryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                AuthorSearchResults results = JsonConvert.DeserializeObject<AuthorSearchResults>(jsonString);
+                results.SearchTime = DateTime.Now;
+                results.SearchString = query;
+                
+                return results;
+            } else {
+                return null;
+            }
+        }
+
 
         //Keys in returned dictionary are in the format of 'OLID:key'.
         public async Task<IDictionary<string, EditionSummary>> searchEditions(IList<string> edition_keys)
@@ -98,11 +153,9 @@ namespace Book_Search_App
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK) {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                IDictionary<string, EditionSummary> results = JsonConvert
-                                                                .DeserializeObject<Dictionary
-                                                                                  <string, EditionSummary>>
-                                                                                  (jsonString);
-                foreach (KeyValuePair<string,EditionSummary> ed in results) {
+                var results = JsonConvert.DeserializeObject
+                                            <Dictionary<string, EditionSummary>>(jsonString);
+                foreach (var ed in results) {
                     ed.Value.FlattenAttributes();
                 }
                 return results;
@@ -143,6 +196,14 @@ namespace Book_Search_App
             } else {
                 return null;
             }
+        }
+
+
+        public bool IsQueryGood(string query)
+        {
+            return query != null && query.Length >= 3 &&
+                !query.Equals("the", StringComparison.InvariantCultureIgnoreCase) &&
+                !query.Equals("for", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

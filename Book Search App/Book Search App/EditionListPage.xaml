@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Book_Search_App.EditionListPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="Header" 
+                   Text=""
+                   FontSize="20"
+                   FontAttributes="Bold"/>
+            <ListView x:Name="EditionListView"
+                      ItemTapped="EditionListView_ItemTapped"
+                      RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding title}"
+                                       TextColor="DarkBlue"
+                                       FontAttributes="Bold"
+                                       FontSize="15"/>
+                                <Label x:Name="AuthorList"/>
+                                <Label Text="{Binding number_of_pages, StringFormat='Number of Pages: {0} pages'}"/>
+                                <Label Text="{Binding publishers_list[0]}"/>
+                                <Label Text="{Binding publish_places_list[0]}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

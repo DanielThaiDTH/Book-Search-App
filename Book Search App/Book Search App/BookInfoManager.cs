@@ -7,8 +7,12 @@ namespace Book_Search_App
 {
     public class BookInfoManager
     {
+        
         ObservableCollection<BookSearchInfo> search_results;
         public ObservableCollection<BookSearchInfo> Search_Results => search_results;
+
+        ObservableCollection<Author> authors_found;
+        public ObservableCollection<Author> Authors_Found => authors_found;
 
         //Cache of visted works to reduce the amount of API calls
         ObservableCollection<KeyValuePair<string, WorkInfo>> visited_works;
@@ -20,19 +24,47 @@ namespace Book_Search_App
         ObservableCollection<WorkInfo> saved_works;
         public ObservableCollection<WorkInfo> Saved_Works => saved_works;
 
+        //Saved authors
+        ObservableCollection<Author> _authors;
+        public ObservableCollection<Author> Authors => _authors;
+
         public BookInfoManager()
         {
+            saved_works = new ObservableCollection<WorkInfo>();
             search_results = new ObservableCollection<BookSearchInfo>();
             visited_works = new ObservableCollection<KeyValuePair<string, WorkInfo>>();
+            _authors = new ObservableCollection<Author>();
+            authors_found = new ObservableCollection<Author>();
         }
 
-        public void SetSearchResults(SearchResults results)
+        public void SetSearchResults(BookSearchResults results)
         {
             search_results.Clear();
 
             foreach (BookSearchInfo book in results.docs) {
                 search_results.Add(book);
             }
+        }
+
+
+        public void SetAuthorSearchResults(AuthorSearchResults results)
+        {
+            authors_found.Clear();
+
+            foreach (Author author in results.docs) {
+                authors_found.Add(author);
+            }
+        }
+
+
+        public bool HasBooksFound()
+        {
+            return Search_Results != null && Search_Results.Count > 0;
+        }
+
+        public bool HasAuthorsFound()
+        {
+            return Authors_Found != null && Authors_Found.Count > 0;
         }
 
         public void CacheWorkInfo(WorkInfo info)

@@ -19,7 +19,12 @@ namespace Book_Search_App
         [Unique]
         public string key { get; set; }
         public string Desc { get; set; }
-
+       
+        //key: key
+        [Ignore]
+        public IDictionary<string, string> type { get; set; }
+        //Redirection location
+        public string location { get; set; }
 
         [TextBlob("authorlistBlob")]
         public List<string> Author_List { get; set; }
@@ -43,17 +48,27 @@ namespace Book_Search_App
         public IList<string> subjects { get; set; }
         public string subjectsBlob { get; set; }
 
+        [TextBlob("editionkeysBlob")]
+        public IList<string> Editions_Keys { get; set; }
+        public string editionkeysBlob { get; set; }
+
+        public DateTime AddTime { get; set; }
+
+
         public WorkInfo()
         {
             Author_List = new List<string>();
+            Editions_Keys = new List<string>();
             UID = -1;
             key = "";
         }
+
 
         public void addAuthor(string author)
         {
             Author_List.Add(author);
         }
+
 
         public string getAuthorStr()
         {
@@ -68,6 +83,24 @@ namespace Book_Search_App
             else
                 return "";
         }
+
+
+        public bool IsRedirect()
+        {
+            if (type == null || !type["key"].Equals("/type/redirect"))
+                return false;
+            else if (type["key"].Equals("/type/redirect"))
+                return true;
+            else
+                return false;
+        }
+
+
+        public string GetRedirect()
+        {
+            return location ?? key;
+        }
+
 
         /*Json schema is not consistent, some tokens have to be parsed individually to determine the 
          structure in order to obtain the data.*/

@@ -6,12 +6,24 @@ namespace Book_Search_App
 {
     public partial class App : Application
     {
+        static NetworkingManager netManager;
+
+        public static NetworkingManager NetManager
+        {
+            get
+            {
+                if (netManager == null) {
+                    netManager = new NetworkingManager();
+                }
+                return netManager;
+            }
+        }
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage(new NetworkingManager(), 
-                                                        new BookInfoManager()));
+            MainPage = new NavigationPage(new MainPage(new BookInfoManager()));
         }
 
         protected override void OnStart()

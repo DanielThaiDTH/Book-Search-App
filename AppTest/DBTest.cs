@@ -13,7 +13,6 @@ namespace AppTest
     {
         private static SQLiteDBTestImp dbImp = new SQLiteDBTestImp();
         private static DatabaseManager dbm = null;
-        private static ObservableCollection<WorkInfo> work_info;
 
         [ClassInitialize]
         public static void initialize(TestContext context)

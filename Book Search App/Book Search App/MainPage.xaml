@@ -8,22 +8,81 @@
         <StackLayout Orientation="Vertical"
                      Padding="15"
                      BackgroundColor="Beige">
-            <Entry x:Name="BookQueryEntry" 
-               Placeholder="Search for a book or author"
-               TextChanged="BookQueryEntry_TextChanged"
-               HorizontalOptions="Center"/>
-            <Button x:Name="SubmitButton"
-                Clicked="SubmitButton_Clicked"
-                Text="Search"
-                HorizontalOptions="Center"
-                BackgroundColor="#b0b0ff"
-                WidthRequest="200"/>
+            <FlexLayout Direction="Row"
+                         HeightRequest="40">
+                <Entry x:Name="BookQueryEntry" 
+                       Placeholder="Search for a book or author"
+                       TextChanged="BookQueryEntry_TextChanged"
+                       FlexLayout.AlignSelf="Start"
+                       FlexLayout.Grow="0.75"
+                       Margin="0,0,10,0"
+                       Completed="SubmitButton_Clicked"
+                       MaxLength="50"
+                       ClearButtonVisibility="WhileEditing"/>
+                <Button x:Name="SubmitButton"
+                        Clicked="SubmitButton_Clicked"
+                        Text="Search"
+                        FlexLayout.AlignSelf="Start"
+                        BackgroundColor="#b0b0ff"
+                        WidthRequest="100"
+                        HeightRequest="40"/>
+            </FlexLayout>
+            <Button x:Name="SettingsButton" 
+                    Text="Search Settings"
+                    HorizontalOptions="Center"
+                    WidthRequest="150"
+                    Clicked="SettingsButton_Clicked"/>
+            <Frame x:Name="SettingsFrame"
+                   BorderColor="Black"
+                   IsVisible="False"
+                   CornerRadius="5"
+                   MinimumHeightRequest="150">
+                <Grid>
+                    <Label Text="Search Type" 
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                         />
+                    <RadioButton Content="Regular"
+                                 IsChecked="True"
+                                 Grid.Row="1"
+                                 Grid.Column="0"
+                                 FontSize="13"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                    <RadioButton Content="Title"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 FontSize="13"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                    <RadioButton Content="Author"
+                                 Grid.Row="1"
+                                 Grid.Column="2"
+                                 FontSize="13"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                    <RadioButton Content="ISBN"
+                                 Grid.Row="1"
+                                 Grid.Column="3"
+                                 FontSize="13"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                    <Label Text="Search For Author"
+                           Grid.Row="2"
+                           Grid.Column="0"/>
+                    <CheckBox x:Name="AuthorOptionCheck" 
+                              Grid.Row="2"
+                              IsChecked="False"
+                              CheckedChanged="AuthorOptionCheck_CheckedChanged"
+                              Grid.Column="1"/>
+                </Grid>
+            </Frame>
         </StackLayout>
+
         <ListView x:Name="SearchResultsList" 
                   ItemTapped="SearchResultsList_ItemTapped"
                   IsRefreshing="False"
-                  RowHeight="75"
-                  >
+                  RowHeight="75">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -33,7 +92,7 @@
                                        TextColor="DarkBlue"
                                        FontAttributes="Bold"
                                        HorizontalOptions="StartAndExpand"/>
-                                <Label Text="{Binding edition_count, StringFormat='{0:N} editions found.'}" 
+                                <Label Text="{Binding edition_count, StringFormat='{0:D} editions found.'}" 
                                        HorizontalOptions="EndAndExpand"
                                        HorizontalTextAlignment="End"/>
                             </StackLayout>
@@ -46,6 +105,26 @@
                                        HorizontalOptions="EndAndExpand"/>
                             </StackLayout>
                         </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView x:Name="AuthorSearchList"
+                      IsRefreshing="False">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <FlexLayout>
+                            <Label Text="{Binding name}"
+                                   TextColor="DarkBlue"
+                                   FontAttributes="Bold"
+                                   FlexLayout.AlignSelf="Start"/>
+                            <StackLayout Orientation="Vertical"
+                                         FlexLayout.AlignSelf="End">
+                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}"/>
+                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}"/>
+                            </StackLayout>
+                        </FlexLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

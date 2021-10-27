@@ -12,14 +12,14 @@ namespace Book_Search_App
     public partial class MainPage : ContentPage
     {
         string query;
-        NetworkingManager openLibraryManager;
+        bool isAuthorSearch = false;
         BookInfoManager infoManager;
-        public MainPage(NetworkingManager nm, BookInfoManager bim)
+        public MainPage(BookInfoManager bim)
         {
             InitializeComponent();
-            openLibraryManager = nm;
             infoManager = bim;
             SearchResultsList.ItemsSource = infoManager.Search_Results;
+            AuthorSearchList.ItemsSource = infoManager.Authors_Found;
         }
 
         private void BookQueryEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -29,25 +29,45 @@ namespace Book_Search_App
 
         async private void SubmitButton_Clicked(object sender, EventArgs e)
         {
-            if (query== null || query.Length < 3 || 
-                query.Equals("the", StringComparison.InvariantCultureIgnoreCase))
+            //Ignore queries that are too common
+            if (!App.NetManager.IsQueryGood(query))
                 return;
 
-            if (infoManager.Search_Results != null && infoManager.Search_Results.Count > 0) {
+            if (infoManager.HasBooksFound()) {
                 SearchResultsList.ScrollTo(infoManager.Search_Results[0], 
-                    ScrollToPosition.Start, false);
+                                            ScrollToPosition.Start, false);
             }
 
-            SearchResultsList.IsRefreshing = true;
-            SearchResults results = await openLibraryManager.searchBooks(query, "eng");
-            if (results == null){
-                await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
-            } else if (results.numFound != 0) {
-                infoManager.SetSearchResults(results);
-            } else {
-                await DisplayAlert("Error", "Nothing found", "OK");
+            if (infoManager.HasAuthorsFound()) {
+                AuthorSearchList.ScrollTo(infoManager.Authors_Found[0],
+                                            ScrollToPosition.Start, false);
             }
-            SearchResultsList.IsRefreshing = false;
+
+            if (!isAuthorSearch) {
+                SearchResultsList.IsVisible = true;
+                AuthorSearchList.IsVisible = false;
+                SearchResultsList.IsRefreshing = true;
+                BookSearchResults results = await App.NetManager.searchBooks(query, "eng");
+                if (results == null) {
+                    await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
+                } else if (results.numFound != 0) {
+                    infoManager.SetSearchResults(results);
+                } else {
+                    await DisplayAlert("No Results", "No books found with that query.", "OK");
+                }
+                SearchResultsList.IsRefreshing = false;
+            } else {
+                SearchResultsList.IsVisible = false;
+                AuthorSearchList.IsVisible = true;
+                AuthorSearchResults results = await App.NetManager.searchAuthors(query);
+                if (results == null) {
+                    await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
+                } else if (results.numFound != 0) {
+                    infoManager.SetAuthorSearchResults(results);
+                } else {
+                    await DisplayAlert("No Results", "No authors found with that query.", "OK");
+                }
+            }
         }
 
 
@@ -55,15 +75,45 @@ namespace Book_Search_App
         {
             WorkInfo wi = infoManager.GetCachedWork((e.Item as BookSearchInfo).key);
             if (wi != null) {
-                Navigation.PushAsync(new WorkInfoPage(openLibraryManager, wi,
-                                                        infoManager.CacheWorkInfo));
+                Navigation.PushAsync(new WorkInfoPage(wi, infoManager));
             } else {
-                Navigation.PushAsync(new WorkInfoPage(openLibraryManager,
-                                                      (e.Item as BookSearchInfo).key,
+                Navigation.PushAsync(new WorkInfoPage((e.Item as BookSearchInfo).key,
                                                       (e.Item as BookSearchInfo).author_name,
-                                                      infoManager.CacheWorkInfo
+                                                      (e.Item as BookSearchInfo).edition_key,
+                                                      infoManager
                     ));
             }
+        }
+
+        private void SettingsButton_Clicked(object sender, EventArgs e)
+        {
+            SettingsFrame.IsVisible = !SettingsFrame.IsVisible;
+        }
+
+        private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            RadioButton checkedButton = (RadioButton)sender;
+
+            if (!checkedButton.IsChecked)
+                return;
+
+            string value = checkedButton.Content.ToString();
+
+            if (value == "Regular") {
+                App.NetManager.Option = SearchType.REGULAR;
+            } else if (value == "Title") {
+                App.NetManager.Option = SearchType.TITLE;
+            } else if (value == "Author") {
+                App.NetManager.Option = SearchType.AUTHOR;
+            } else if (value == "ISBN") {
+                App.NetManager.Option = SearchType.ISBN;
+            }
+        }
+
+        private void AuthorOptionCheck_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            CheckBox check = (CheckBox)sender;
+            isAuthorSearch = check.IsChecked;
         }
     }
 }
