@@ -84,9 +84,7 @@ namespace Book_Search_App
 
         public void SaveClicked(object sender, EventArgs e)
         {
-            if (!infoManager.Authors.Contains(author)) {
-                author.AddTime = DateTime.Now;
-                infoManager.Authors.Add(author);
+            if (!infoManager.AddAuthor(author)) { 
                 IsSaved = true;
                 DisplayAlert(author.name + " Saved", "This author has been successfully saved.", "OK");
             } else {
@@ -96,9 +94,7 @@ namespace Book_Search_App
 
         public void DeleteClicked(object sender, EventArgs e)
         {
-            if (infoManager.Authors.Contains(author)) {
-                infoManager.Authors.Remove(author);
-                author.AddTime = DateTime.MinValue;
+            if (infoManager.RemoveAuthor(author)) {
                 DisplayAlert(author.name + " Deleted", "This author has been removed from yout list of saved authors.", "OK");
                 IsSaved = false;
             }

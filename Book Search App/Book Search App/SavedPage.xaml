@@ -19,14 +19,17 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
+        <FlexLayout Direction="Column"
+                    AlignItems="Center">
             <Label Text="Your Saved Books and Authors"
                    FontAttributes="Bold"
-                   FontSize="18"/>
-            <Frame BorderColor="DarkBlue">
+                   FontSize="18"
+                   FlexLayout.Grow="0.10"/>
+            <Frame BorderColor="DarkBlue"
+                   FlexLayout.Grow="0.7">
                 <StackLayout Orientation="Horizontal">
                     <ListView x:Name="SavedWorksList"
-                              RowHeight="75"
+                              RowHeight="80"
                               ItemSelected="SavedWorksList_ItemSelected">
                         <ListView.Header>
                             <Label Text="Books"
@@ -42,19 +45,23 @@
                                             <Label Text="{Binding title}" 
                                                    TextColor="DarkBlue"
                                                    FontAttributes="Bold"
-                                                   HorizontalOptions="StartAndExpand"/>
+                                                   HorizontalOptions="StartAndExpand"
+                                                   Margin="5,0,0,0"/>
                                             <Label Text="{Binding AddTime, 
                                                             StringFormat='Saved at {0}'}" 
                                                    HorizontalOptions="EndAndExpand"
-                                                   HorizontalTextAlignment="End"/>
+                                                   HorizontalTextAlignment="End"
+                                                   Margin="0,0,0,0"/>
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding author_name[0]}" 
+                                            <Label Text="{Binding Author_List[0]}" 
                                                    TextColor="DarkMagenta"
                                                    HorizontalOptions="StartAndExpand"
-                                                   HorizontalTextAlignment="End"/>
+                                                   Margin="5,0,0,0"/>
                                             <Label Text="{Binding first_publish_year}" 
-                                                   HorizontalOptions="EndAndExpand"/>
+                                                   HorizontalOptions="EndAndExpand"
+                                                   HorizontalTextAlignment="End"
+                                                   Margin="0,0,5,0"/>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>
@@ -78,18 +85,22 @@
                                                      FlexLayout.AlignSelf="Start">
                                             <Label Text="{Binding name}"
                                                    TextColor="DarkBlue"
-                                                   FontAttributes="Bold"/>
-                                            <Label Text="{Binding AddTime, StringFormat='Saved at {0}'}"/>
+                                                   FontAttributes="Bold"
+                                                   Margin="5,0,0,0"/>
+                                            <Label Text="{Binding AddTime, StringFormat='Saved at {0}'}"
+                                                   Margin="5,0,0,0"/>
                                         </StackLayout>
                                         <Label Text="" FlexLayout.Grow="0.7"/>
                                         <StackLayout Orientation="Vertical"
                                                      FlexLayout.AlignSelf="End">
                                             <Label Text="{Binding birth_date, 
                                                             StringFormat='Birth Date: {0}'}" 
-                                                   HorizontalTextAlignment="End"/>
+                                                   HorizontalTextAlignment="End"
+                                                   Margin="0,0,10,0"/>
                                             <Label Text="{Binding death_date, 
                                                             StringFormat='Date of Death: {0}'}" 
-                                                   HorizontalTextAlignment="End"/>
+                                                   HorizontalTextAlignment="End"
+                                                   Margin="0,0,10,0"/>
                                         </StackLayout>
                                     </FlexLayout>
                                 </ViewCell>
@@ -98,7 +109,9 @@
                     </ListView>
                 </StackLayout>
             </Frame>
-            <FlexLayout FlowDirection="LeftToRight">
+            <FlexLayout FlowDirection="LeftToRight"
+                        Direction="Row"
+                        FlexLayout.Grow="0.10">
                 <Button x:Name="BooksButton"  Text="Books" 
                         FlexLayout.Grow="0.5"
                         Clicked="BooksButton_Clicked"/>
@@ -106,6 +119,6 @@
                         FlexLayout.Grow="0.5"
                         Clicked="AuthorsButton_Clicked"/>
             </FlexLayout>
-        </StackLayout>
+        </FlexLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -56,6 +56,30 @@ namespace Book_Search_App
                 isbn13 = temp[0];
         }
 
+
+        public string GetGoodreadsURL()
+        {
+            if (goodreads == null)
+                return "";
+
+            return "https://www.goodreads.com/book/show/" + goodreads;
+        }
+        public string GetLibrarythingURL()
+        {
+            if (librarything == null)
+                return "";
+
+            return "https://www.librarything.com/work/" + librarything;
+        }
+
+        public string GetAmazonURL()
+        {
+            if (amazon == null)
+                return "";
+
+            return "https://www.amazon.com/dp/" + amazon;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null) return false;

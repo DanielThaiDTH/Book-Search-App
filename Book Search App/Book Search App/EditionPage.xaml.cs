@@ -40,6 +40,18 @@ namespace Book_Search_App
         {
             edition = await App.NetManager.queryEdition(key);
             TitleText.Text = edition.title + ": " + edition.subtitle??"";
+            PublisherText.Text = edition.GetPublishersCS();
+            LocationText.Text = edition.GetPublishLocationsCS();
+
+            if (edition.number_of_pages > 0)
+                NoOfPagesText.Text = edition.number_of_pages.ToString();
+
+            AuthorsText.Text = edition.GetAuthorsCS();
+            GenresText.Text = edition.GetGenresCS();
+
+
+            ISBNText.Text = edition.GetISBNs();
+            LanguageText.Text = edition.Language;
 
             if (edition.getImgURL().Length > 0)
                 BookCover.HeightRequest = 275;

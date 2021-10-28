@@ -69,5 +69,6 @@ namespace Book_Search_App
         {
             Navigation.PushAsync(new WorkInfoPage((WorkInfo)e.SelectedItem, infoManager));
         }
+
     }
 }

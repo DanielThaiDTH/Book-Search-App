@@ -20,16 +20,32 @@
                                          Aspect="AspectFit"
                                          Margin="0, 15, 0, 15">
             </ffimage:CachedImage>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Title" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="TitleText"/>
-            </StackLayout>
+            <Label Text="Title" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="TitleText" Margin="0,0,10,0"/>
+            
             <Label Text="Publishers" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="PublisherText" Margin="0,0,10,0"/>
+            
             <Label Text="Published At" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="LocationText" Margin="0,0,10,0"/>
+            
             <Label Text="Number Of Pages" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="NoOfPagesText" Margin="0,0,10,0"/>
+            
             <Label Text="Publish Date" Style="{StaticResource HeaderText}"/>
-            <Label Text="Number Of Pages" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="PublishDateText" Margin="0,0,10,0"/>
+            
             <Label Text="Authors" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="AuthorsText" Margin="0,0,10,0"/>
+
+            <Label Text="Language" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="LanguageText" Margin="0,0,10,0"/>
+
+            <Label Text="Genres" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="GenresText" Margin="0,0,10,0"/>
+
+            <Label Text="ISBN" Style="{StaticResource HeaderText}"/>
+            <Label x:Name="ISBNText" Margin="0,0,10,0"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
