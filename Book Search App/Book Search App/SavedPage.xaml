@@ -4,15 +4,17 @@
              x:Class="Book_Search_App.SavedPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="SelectedStyle">
+            <Style x:Key="SelectedStyle"
+                   TargetType="Button">
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="TextColor" Value="OrangeRed"/>
                 <Setter Property="BackgroundColor" Value="Beige"/>
             </Style>
-            <Style x:Key="NormalStyle">
+            <Style x:Key="NormalStyle"
+                   TargetType="Button">
                 <Setter Property="FontAttributes" Value="None"/>
-                <Setter Property="TextColor" Value="Grey"/>
-                <Setter Property="BackgroundColor" Value="LightGrey"/>
+                <Setter Property="TextColor" Value="Gray"/>
+                <Setter Property="BackgroundColor" Value="LightGray"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -27,7 +29,10 @@
                               RowHeight="75"
                               ItemSelected="SavedWorksList_ItemSelected">
                         <ListView.Header>
-                            <Label Text="Books"/>
+                            <Label Text="Books"
+                                   FontAttributes="Bold"
+                                   FontSize="15"
+                                   TextColor="DarkTurquoise"/>
                         </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -38,8 +43,8 @@
                                                    TextColor="DarkBlue"
                                                    FontAttributes="Bold"
                                                    HorizontalOptions="StartAndExpand"/>
-                                            <Label Text="{Binding Edition_Keys.Count, 
-                                                            StringFormat='{0:D} editions found.'}" 
+                                            <Label Text="{Binding AddTime, 
+                                                            StringFormat='Saved at {0}'}" 
                                                    HorizontalOptions="EndAndExpand"
                                                    HorizontalTextAlignment="End"/>
                                         </StackLayout>
@@ -60,16 +65,22 @@
                               RowHeight="50"
                               ItemSelected="SavedAuthorsList_ItemSelected">
                         <ListView.Header>
-                            <Label Text="Authors"/>
+                            <Label Text="Authors"
+                                   FontAttributes="Bold"
+                                   FontSize="15"
+                                   TextColor="DarkTurquoise"/>
                         </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <FlexLayout>
-                                        <Label Text="{Binding name}"
-                                               TextColor="DarkBlue"
-                                               FontAttributes="Bold"
-                                               FlexLayout.AlignSelf="Start"/>
+                                        <StackLayout Orientation="Vertical"
+                                                     FlexLayout.AlignSelf="Start">
+                                            <Label Text="{Binding name}"
+                                                   TextColor="DarkBlue"
+                                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding AddTime, StringFormat='Saved at {0}'}"/>
+                                        </StackLayout>
                                         <Label Text="" FlexLayout.Grow="0.7"/>
                                         <StackLayout Orientation="Vertical"
                                                      FlexLayout.AlignSelf="End">

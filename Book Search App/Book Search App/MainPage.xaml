@@ -124,8 +124,10 @@
                             <Label Text="" FlexLayout.Grow="0.7"/>
                             <StackLayout Orientation="Vertical"
                                          FlexLayout.AlignSelf="End">
-                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}" HorizontalTextAlignment="End"/>
-                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}" HorizontalTextAlignment="End"/>
+                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}" 
+                                       HorizontalTextAlignment="End"/>
+                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}" 
+                                       HorizontalTextAlignment="End"/>
                             </StackLayout>
                         </FlexLayout>
                     </ViewCell>

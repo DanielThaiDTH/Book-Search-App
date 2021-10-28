@@ -124,11 +124,9 @@ namespace Book_Search_App
 
         public void saveClicked(object sender, EventArgs e)
         {
-            if (!infoManager.Saved_Works.Contains(info)) {
-                info.AddTime = DateTime.Now;
-                infoManager.Saved_Works.Add(info);
-                IsSaved = true;
+            if (infoManager.AddWork(info)) { 
                 DisplayAlert(info.title + " Saved", "This book has been successfully saved.", "OK");
+                IsSaved = true;
             } else {
                 IsSaved = true;
             }
@@ -136,9 +134,7 @@ namespace Book_Search_App
 
         public void deleteClicked(object sender, EventArgs e)
         {
-            if (infoManager.Saved_Works.Contains(info)) {
-                infoManager.Saved_Works.Remove(info);
-                info.AddTime = DateTime.MinValue;
+            if(infoManager.RemoveWork(info)) { 
                 DisplayAlert(info.title + " Deleted", "This book has been removed from your saved books list.", "OK");
                 IsSaved = false;
             }

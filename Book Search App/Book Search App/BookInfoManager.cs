@@ -12,7 +12,18 @@ namespace Book_Search_App
         public ObservableCollection<BookSearchInfo> Search_Results => search_results;
 
         ObservableCollection<Author> authors_found;
-        public ObservableCollection<Author> Authors_Found => authors_found;
+        public ObservableCollection<Author> Authors_Found
+        { 
+            get { return authors_found; }
+            set
+            {
+                if (value == null || authors_found.GetType() != value.GetType())
+                    return;
+
+                authors_found = value;
+            }
+        }
+        
 
         //Cache of visted works to reduce the amount of API calls
         ObservableCollection<KeyValuePair<string, WorkInfo>> visited_works;
@@ -22,7 +33,17 @@ namespace Book_Search_App
 
         //Saved books(works)
         ObservableCollection<WorkInfo> saved_works;
-        public ObservableCollection<WorkInfo> Saved_Works => saved_works;
+        public ObservableCollection<WorkInfo> Saved_Works
+        {
+            get { return saved_works; }
+            set 
+            {
+                if (value == null || saved_works.GetType() != saved_works.GetType())
+                    return;
+
+                saved_works = value;
+            }
+        }
 
         //Saved authors
         ObservableCollection<Author> _authors;
@@ -67,6 +88,87 @@ namespace Book_Search_App
             return Authors_Found != null && Authors_Found.Count > 0;
         }
 
+
+        /// <summary>
+        /// Adds a work to the local session and to the database if it doesn't exist.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns>True if successfully added</returns>
+        public bool AddWork(WorkInfo info)
+        {
+            if (!Saved_Works.Contains(info)) {
+                info.AddTime = DateTime.Now;
+                Saved_Works.Add(info);
+                App.Database.AddInfo(info);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves a work into the current session and in the database. Saving into database is async and 
+        /// may not complete before function returns.
+        /// </summary>
+        /// <param name="info">WorkInfo</param>
+        /// <returns>True if it removed an existing work, false otherwise.</returns>
+        public bool RemoveWork(WorkInfo info)
+        {
+            if (Saved_Works.Contains(info)) {
+                info.AddTime = DateTime.MinValue;
+                Saved_Works.Remove(info);
+                App.Database.DeleteWork(info.key);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Adds an author to the local session and database.
+        /// </summary>
+        /// <param name="a">an Author</param>
+        /// <returns>True if the author us saved, false if it already exists</returns>
+        public bool AddAuthor(Author a)
+        {
+            if (!Authors.Contains(a)) {
+                a.AddTime = DateTime.Now;
+                Authors.Add(a);
+                App.Database.AddInfo(a);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the author is currently stored. If so removes it from the local session 
+        /// and database.
+        /// </summary>
+        /// <param name="a">an Author</param>
+        /// <returns>True if found and removed.</returns>
+        public bool RemoveAuthor(Author a)
+        {
+            if (Authors.Contains(a)) {
+                a.AddTime = DateTime.MinValue;
+                Authors.Remove(a);
+                App.Database.DeleteAuthor(a.key);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Temporarily stores a work to reduce API calls.
+        /// </summary>
+        /// <param name="info"></param>
         public void CacheWorkInfo(WorkInfo info)
         {
             bool found = false;

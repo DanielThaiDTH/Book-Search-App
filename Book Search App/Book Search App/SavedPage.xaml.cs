@@ -28,9 +28,13 @@ namespace Book_Search_App
                 if (value == SavedTabOption.AUTHOR) {
                     SavedWorksList.IsVisible = false;
                     SavedAuthorsList.IsVisible = true;
+                    BooksButton.Style = Resources["NormalStyle"] as Style;
+                    AuthorsButton.Style = Resources["SelectedStyle"] as Style;
                 } else {
                     SavedWorksList.IsVisible = true;
                     SavedAuthorsList.IsVisible = false;
+                    BooksButton.Style = Resources["SelectedStyle"] as Style;
+                    AuthorsButton.Style = Resources["NormalStyle"] as Style;
                 }
 
                 selected = value;
@@ -49,15 +53,11 @@ namespace Book_Search_App
         private void BooksButton_Clicked(object sender, EventArgs e)
         {
             SelectedTab = SavedTabOption.WORKS;
-            BooksButton.Style = Resources["SelectedStyle"] as Style;
-            AuthorsButton.Style = Resources["NormalStyle"] as Style;
         }
 
         private void AuthorsButton_Clicked(object sender, EventArgs e)
         {
             SelectedTab = SavedTabOption.AUTHOR;
-            BooksButton.Style = Resources["NormalStyle"] as Style;
-            AuthorsButton.Style = Resources["SelectedStyle"] as Style;
         }
 
         private void SavedAuthorsList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
