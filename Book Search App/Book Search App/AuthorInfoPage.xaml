@@ -25,14 +25,23 @@
                 </ffimage:CachedImage>
                 <StackLayout>
                     <Button x:Name="SaveButton" Text="Save"
-                                Clicked="SaveClicked"
-                                TextColor="white"
-                                BackgroundColor="DarkTurquoise"/>
+                            Clicked="SaveClicked"
+                            TextColor="white"
+                            BackgroundColor="DarkTurquoise"
+                            Margin="0,10,10,0"/>
                     <Button x:Name="DeleteButton" Text="Delete"
-                                Clicked="DeleteClicked"
-                                TextColor="White"
-                                BackgroundColor="Red"/>
-                </StackLayout>
+                            Clicked="DeleteClicked"
+                            TextColor="White"
+                            BackgroundColor="Red"
+                            Margin="0,0,10,0"/>
+                    <Button x:Name="ByButton" 
+                            Text="Books"
+                            TextColor="White"
+                            BackgroundColor="Blue"
+                            Margin="0,0,10,10"
+                            VerticalOptions="EndAndExpand"
+                            Clicked="ByButton_Clicked"/>
+                 </StackLayout>
             </StackLayout>
             <Label Text="Name" Style="{StaticResource HeaderText}"/>
             <Label x:Name="Name_Text" Margin="0,0,0,10"/>

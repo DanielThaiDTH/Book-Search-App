@@ -14,6 +14,7 @@ namespace Book_Search_App
         public IList<string> edition_key { get; set; }
         public int first_publish_year { get; set; }
         public string cover_edition_key { get; set; }
+        public IList<int> covers { get; set; }
         public IList<string> language { get; set; } //Three letter code for language
         public IList<string> author_key { get; set; }
         public IList<string> author_name { get; set; }
@@ -25,6 +26,7 @@ namespace Book_Search_App
         public IList<string> place { get; set; }
         public IList<string> subject { get; set; }
         public IList<string> time { get; set; }
+
 
         public override int GetHashCode()
         {

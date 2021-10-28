@@ -88,7 +88,7 @@ namespace Book_Search_App
 
         public NetworkingManager() 
         {
-            ReturnLimit = 25;
+            ReturnLimit = 100;
             Option = SearchType.REGULAR;
             queryOption = new Dictionary<SearchType, string>();
             queryOption.Add(SearchType.REGULAR, "q=");
@@ -129,6 +129,23 @@ namespace Book_Search_App
                 results.SearchTime = DateTime.Now;
                 results.SearchString = query;
                 
+                return results;
+            } else {
+                return null;
+            }
+        }
+
+
+        public async Task<AuthorWorkSearchResults> searchWorksBy(string key)
+        {
+            string queryURL = query_base + key + "/works.json?" + limit + ReturnLimit.ToString();
+
+            var response = await client.GetAsync(queryURL);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var results = JsonConvert.DeserializeObject<AuthorWorkSearchResults>(jsonString);
+
                 return results;
             } else {
                 return null;
@@ -232,6 +249,31 @@ namespace Book_Search_App
             } else {
                 return null;
             }
+        }
+
+
+        /// <summary>
+        /// Obtains two lists, a list of edition keys and a list of author names. 
+        /// Needed because author work search does not return compelte information.
+        /// </summary>
+        /// <param name="work_key">OpenLibrary work key</param>
+        /// <returns>Two lists, the first being the edition keys, the second the author names</returns>
+        public async Task<IList<IList<string>>> GetEditionsAndAuthors(string work_key)
+        {
+            var result = await searchBooks(work_key);
+            IList <IList<string>> returnLists = new List<IList<string>>();
+            if (result != null) {
+                if (result.docs == null || result.docs.Count == 0)
+                    return null;
+                
+                var info = result.docs[0];
+                returnLists.Add(info.edition_key);
+                returnLists.Add(info.author_name);
+
+                return returnLists;
+            }
+
+            return null;
         }
 
 

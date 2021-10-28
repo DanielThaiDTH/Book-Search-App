@@ -83,9 +83,13 @@ namespace Book_Search_App
 
         private void SearchResultsList_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            WorkInfo wi = infoManager.GetCachedWork((e.Item as BookSearchInfo).key);
+            string key = (e.Item as BookSearchInfo).key;
+            WorkInfo wi = infoManager.GetCachedWork(key);
+            WorkInfo savedWI = infoManager.GetSavedWork(key);
             if (wi != null) {
                 Navigation.PushAsync(new WorkInfoPage(wi, infoManager));
+            } else if (savedWI != null) {
+                Navigation.PushAsync(new WorkInfoPage(savedWI, infoManager));
             } else {
                 Navigation.PushAsync(new WorkInfoPage((e.Item as BookSearchInfo).key,
                                                       (e.Item as BookSearchInfo).author_name,

@@ -42,6 +42,7 @@ namespace Book_Search_App
         [TextBlob("subjectplacesBlob")]
         public IList<string> subject_places { get; set; }
         public string subjectplacesBlob { get; set; }
+
         public string first_publish_date { get; set; }
 
         [TextBlob("subjectsBlob")]
@@ -82,6 +83,38 @@ namespace Book_Search_App
                 return authors.Substring(0, authors.Length - 2);
             else
                 return "";
+        }
+
+
+        public string getSubjectStr()
+        {
+            string subject_string = "";
+            int subjects_count = subjects?.Count ?? 0;
+
+            for (int i = 0; i < subjects_count; i++) {
+                if (i > 0)
+                    subject_string += ", ";
+
+                subject_string += subjects[i];
+            }
+
+            return subject_string;
+        }
+
+
+        public string getSubjectPlaces()
+        {
+            string place_string = "";
+            int count = subject_places?.Count ?? 0;
+
+            for (int i = 0; i < count; i++) {
+                if (i > 0)
+                    place_string += ", ";
+
+                place_string += subject_places[i];
+            }
+
+            return place_string;
         }
 
 

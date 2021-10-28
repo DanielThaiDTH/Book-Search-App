@@ -99,5 +99,14 @@ namespace Book_Search_App
                 IsSaved = false;
             }
         }
+
+        private void ByButton_Clicked(object sender, EventArgs e)
+        {
+            if (infoManager.PreviousAuthorWorkSearchKey != null &&
+                infoManager.PreviousAuthorWorkSearchKey.Equals(author.key))
+                Navigation.PushAsync(new AuthorWorksPage(infoManager, author.name));
+            else
+                Navigation.PushAsync(new AuthorWorksPage(author.key, infoManager, author.name));
+        }
     }
 }

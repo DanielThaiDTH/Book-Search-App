@@ -7,9 +7,13 @@ namespace Book_Search_App
 {
     public class BookInfoManager
     {
-        
+        //Search results
         ObservableCollection<BookSearchInfo> search_results;
         public ObservableCollection<BookSearchInfo> Search_Results => search_results;
+
+        ObservableCollection<AuthorWorkSearchInfo> by_author_search_results;
+        public ObservableCollection<AuthorWorkSearchInfo> By_Author_Search_Results => by_author_search_results;
+        public string PreviousAuthorWorkSearchKey { get; set; }
 
         ObservableCollection<Author> authors_found;
         public ObservableCollection<Author> Authors_Found
@@ -72,6 +76,7 @@ namespace Book_Search_App
         {
             saved_works = new ObservableCollection<WorkInfo>();
             search_results = new ObservableCollection<BookSearchInfo>();
+            by_author_search_results = new ObservableCollection<AuthorWorkSearchInfo>();
             visited_works = new ObservableCollection<KeyValuePair<string, WorkInfo>>();
             _authors = new ObservableCollection<Author>();
             authors_found = new ObservableCollection<Author>();
@@ -98,6 +103,17 @@ namespace Book_Search_App
             }
         }
 
+
+        public void SetAuthorWorkSearchResults(AuthorWorkSearchResults results)
+        {
+            by_author_search_results.Clear();
+
+            foreach (AuthorWorkSearchInfo info in results.entries) {
+                //Unused, querying too much images crashes the network manager
+                //info.static_cover_url = info.GetImgURL();
+                by_author_search_results.Add(info);
+            }
+        }
 
         public bool HasBooksFound()
         {
@@ -228,6 +244,17 @@ namespace Book_Search_App
             }
 
             return old_info;
+        }
+
+
+        public WorkInfo GetSavedWork(string key)
+        {
+            foreach (WorkInfo info in Saved_Works) {
+                if (info.key.Equals(key))
+                    return info;
+            }
+
+            return null;
         }
 
 

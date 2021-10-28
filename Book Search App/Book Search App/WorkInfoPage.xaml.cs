@@ -101,18 +101,8 @@ namespace Book_Search_App
             Title_Text.Text = Info.title??"";
             Desc.Text = Info.Desc ?? "";
             Author_Text.Text = Info.getAuthorStr();
-
-            string subject_string = "";
-            int subjects_count = Info.subjects?.Count ?? 0;
-
-            for (int i = 0; i < subjects_count; i++) {
-                if (i > 0)
-                    subject_string += ", ";
-
-                subject_string += Info.subjects[i];
-            }
-
-            Subject_Text.Text = subject_string;
+            Subject_Text.Text = Info.getSubjectStr();
+            Subject_Places_Text.Text = Info.getSubjectPlaces();
             PublishDate.Text = Info.first_publish_date ?? "";
 
 

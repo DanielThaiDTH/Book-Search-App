@@ -26,26 +26,30 @@
                         <Button x:Name="SaveButton" Text="Save"
                                 Clicked="saveClicked"
                                 TextColor="white"
-                                BackgroundColor="DarkTurquoise"/>
+                                BackgroundColor="DarkTurquoise"
+                                Margin="0,10,5,0"/>
                         <Button x:Name="DeleteButton" Text="Delete"
                                 Clicked="deleteClicked"
                                 TextColor="White"
-                                BackgroundColor="Red"/>
+                                BackgroundColor="Red"
+                                Margin="0,0,5,0"/>
                     </StackLayout>
                 </StackLayout>
                 <Label Text="Title" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Title_Text" Margin="0,0,0,10"/>
+                <Label x:Name="Title_Text" Margin="5,0,0,10"/>
                 <Label Text="Author" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Author_Text" Margin="0,0,0,10"/>
+                <Label x:Name="Author_Text" Margin="5,0,0,10"/>
                 <Label Text="First Publish Date" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="PublishDate" Margin="0,0,0,10"/>
+                <Label x:Name="PublishDate" Margin="5,0,0,10"/>
                 <Button x:Name="ViewEditionButton" 
                         Text="View All Editions"
                         Clicked="ViewEditionButton_Clicked"/>
-                <Label Text="Subjects" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Subject_Text" Margin="0,0,0,10"/>
                 <Label Text="Description" Style="{StaticResource HeaderText}"/>
-                <Label x:Name="Desc" Margin="0,0,0,10"/>
+                <Label x:Name="Desc" Margin="5,0,0,10"/>
+                <Label Text="Subjects" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="Subject_Text" Margin="5,0,0,10"/>
+                <Label Text="Subjects Places" Style="{StaticResource HeaderText}"/>
+                <Label x:Name="Subject_Places_Text" Margin="5,0,0,10"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
