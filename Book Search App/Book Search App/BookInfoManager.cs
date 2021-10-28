@@ -47,7 +47,17 @@ namespace Book_Search_App
 
         //Saved authors
         ObservableCollection<Author> _authors;
-        public ObservableCollection<Author> Authors => _authors;
+        public ObservableCollection<Author> Authors
+        {
+            get { return _authors; }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _authors = value;
+            }
+        }
 
         public BookInfoManager()
         {

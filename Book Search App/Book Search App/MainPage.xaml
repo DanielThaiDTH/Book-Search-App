@@ -79,61 +79,69 @@
             </Frame>
         </StackLayout>
 
-        <ListView x:Name="SearchResultsList" 
+        <Grid MinimumHeightRequest="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListView x:Name="SearchResultsList" 
+                      Grid.Row="0"
                   ItemTapped="SearchResultsList_ItemTapped"
-                  IsRefreshing="False"
                   RowHeight="75">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Vertical">
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding title}" 
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding title}" 
                                        TextColor="DarkBlue"
                                        FontAttributes="Bold"
                                        HorizontalOptions="StartAndExpand"/>
-                                <Label Text="{Binding edition_count, StringFormat='{0:D} editions found.'}" 
+                                    <Label Text="{Binding edition_count, StringFormat='{0:D} editions found.'}" 
                                        HorizontalOptions="EndAndExpand"
                                        HorizontalTextAlignment="End"/>
-                            </StackLayout>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding author_name[0]}" 
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding author_name[0]}" 
                                        TextColor="DarkMagenta"
                                        HorizontalOptions="StartAndExpand"
                                        HorizontalTextAlignment="End"/>
-                                <Label Text="{Binding first_publish_year}" 
+                                    <Label Text="{Binding first_publish_year}" 
                                        HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <ListView x:Name="AuthorSearchList"
-                  IsRefreshing="False"
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="AuthorSearchList"
+                      Grid.Row="1"
                   ItemTapped="AuthorSearchList_ItemTapped"
-                  RowHeight="50">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <FlexLayout>
-                            <Label Text="{Binding name}"
+                  RowHeight="75">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <FlexLayout>
+                                <Label Text="{Binding name}"
                                    TextColor="DarkBlue"
                                    FontAttributes="Bold"
-                                   FlexLayout.AlignSelf="Start"/>
-                            <Label Text="" FlexLayout.Grow="0.7"/>
-                            <StackLayout Orientation="Vertical"
-                                         FlexLayout.AlignSelf="End">
-                                <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}" 
-                                       HorizontalTextAlignment="End"/>
-                                <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}" 
-                                       HorizontalTextAlignment="End"/>
-                            </StackLayout>
-                        </FlexLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+                                   FlexLayout.AlignSelf="Start"
+                                   FlexLayout.Grow="0.65"/>
+                                <StackLayout Orientation="Vertical"
+                                             FlexLayout.AlignSelf="End">
+                                    <Label Text="{Binding birth_date, StringFormat='Birth Date: {0}'}" 
+                                           HorizontalTextAlignment="End"/>
+                                    <Label Text="{Binding death_date, StringFormat='Date of Death: {0}'}" 
+                                           HorizontalTextAlignment="End"/>
+                                </StackLayout>
+                            </FlexLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
+
+
+    </StackLayout>
 </ContentPage>

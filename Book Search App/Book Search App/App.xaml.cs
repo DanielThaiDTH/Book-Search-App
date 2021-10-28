@@ -53,7 +53,7 @@ namespace Book_Search_App
 
         private async Task<int> InitializeDB(BookInfoManager im)
         {
-            im.Authors_Found = await Database.InitAuthorsTable();
+            im.Authors = await Database.InitAuthorsTable();
             im.Saved_Works = await Database.InitWorksTable();
             return 0;
         }
