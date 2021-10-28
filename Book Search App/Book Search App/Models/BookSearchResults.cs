@@ -8,6 +8,8 @@ namespace Book_Search_App
     { 
         public IList<BookSearchInfo> docs { get; set; }
 
+        public SearchType SearchOption { get; set; }
+
         public BookSearchResults(){}
 
         public void cleanResults()
@@ -36,7 +38,7 @@ namespace Book_Search_App
                 return false;
             }
 
-            return this.SearchTime.Equals(other.SearchTime) 
+            return this.SearchOption.Equals(other.SearchOption) 
                 && this.numFound == other.numFound
                 && this.SearchString.Equals(other.SearchString);
         }

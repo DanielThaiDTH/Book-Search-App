@@ -108,6 +108,7 @@ namespace Book_Search_App
                 BookSearchResults results = JsonConvert.DeserializeObject<BookSearchResults>(jsonString);
                 results.SearchTime = DateTime.Now;
                 results.SearchString = query;
+                results.SearchOption = Option;
                 results.cleanResults(); //Remove books with no authors
                 return results;
             } else {

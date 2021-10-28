@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -39,11 +40,20 @@ namespace Book_Search_App
             infoManager = new BookInfoManager();
             InitializeDB(infoManager);
 
+            //Seems to fix the issue with ListView appearing, could be 
+            //caused by sync issues (App modifies infoManager, while ListView in main
+            //accesses it to use as an item source.)
+            try {
+                Thread.Sleep(500);
+            }
+            catch (ThreadInterruptedException e) {
+                Console.WriteLine(e.Message);
+            }
+
             MainPage = new NavigationPage(new MainPage(infoManager));
             ToolbarItem savedPageNav = new ToolbarItem { Text = "Saved Books/Authors" };
             MainPage.ToolbarItems.Add(savedPageNav);
             savedPageNav.Clicked += SavedPageNav_Clicked;
-
         }
 
         private void SavedPageNav_Clicked(object sender, EventArgs e)
@@ -51,11 +61,12 @@ namespace Book_Search_App
             MainPage.Navigation.PushAsync(new SavedPage(infoManager));
         }
 
-        private async Task<int> InitializeDB(BookInfoManager im)
+        private async void InitializeDB(BookInfoManager im)
         {
             im.Authors = await Database.InitAuthorsTable();
             im.Saved_Works = await Database.InitWorksTable();
-            return 0;
+
+            
         }
 
         protected override void OnStart()

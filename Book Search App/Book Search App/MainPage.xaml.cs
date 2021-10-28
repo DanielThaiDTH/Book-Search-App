@@ -46,16 +46,24 @@ namespace Book_Search_App
             if (!isAuthorSearch) {
                 SearchResultsList.IsVisible = true;
                 AuthorSearchList.IsVisible = false;
+                
                 SearchResultsList.IsRefreshing = true;
-                BookSearchResults results = await App.NetManager.searchBooks(query, "eng");
-                if (results == null) {
-                    await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
-                } else if (results.numFound != 0) {
-                    infoManager.SetSearchResults(results);
-                } else {
-                    await DisplayAlert("No Results", "No books found with that query.", "OK");
+                if (!infoManager.IsPreviousQuery(query, App.NetManager.Option)) {
+
+                    BookSearchResults results = await App.NetManager.searchBooks(query, "eng");
+                    infoManager.RecordPreviousQuery(query, App.NetManager.Option);
+
+                    if (results == null) {
+                        await DisplayAlert("API Access Error", "Could not connect to OpenLibrary", "OK");
+                    } else if (results.numFound != 0) {
+                        infoManager.SetSearchResults(results);
+                    } else {
+                        await DisplayAlert("No Results", "No books found with that query.", "OK");
+                    }
                 }
+
                 SearchResultsList.IsRefreshing = false;
+
             } else {
                 SearchResultsList.IsVisible = false;
                 AuthorSearchList.IsVisible = true;

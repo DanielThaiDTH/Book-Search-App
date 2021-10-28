@@ -59,6 +59,15 @@ namespace Book_Search_App
             }
         }
 
+        class PreviousQuery
+        {
+            public SearchType Option { get; set; }
+            public string Query { get; set; }
+        }
+
+        PreviousQuery previous;
+
+
         public BookInfoManager()
         {
             saved_works = new ObservableCollection<WorkInfo>();
@@ -66,6 +75,8 @@ namespace Book_Search_App
             visited_works = new ObservableCollection<KeyValuePair<string, WorkInfo>>();
             _authors = new ObservableCollection<Author>();
             authors_found = new ObservableCollection<Author>();
+            previous = new PreviousQuery();
+            previous.Query = "";
         }
 
         public void SetSearchResults(BookSearchResults results)
@@ -217,6 +228,21 @@ namespace Book_Search_App
             }
 
             return old_info;
+        }
+
+
+        public void RecordPreviousQuery(string query, SearchType option)
+        {
+            previous.Query = query;
+            previous.Option = option;
+        }
+
+        public bool IsPreviousQuery(string query, SearchType option, bool ignoreOption = false)
+        {
+            if (ignoreOption)
+                return previous.Query.Equals(query);
+            else
+                return previous.Query.Equals(query) && previous.Option == option;
         }
     }
 }
