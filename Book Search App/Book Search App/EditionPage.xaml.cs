@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -52,11 +52,29 @@ namespace Book_Search_App
 
             ISBNText.Text = edition.GetISBNs();
             LanguageText.Text = edition.Language;
+            GoodreadsLink.Text = edition.GetGoodreadsURL();
+            AmazonLink.Text = edition.GetAmazonURL();
+            LibrarythingLink.Text = edition.GetLibrarythingURL();
 
             if (edition.getImgURL().Length > 0)
                 BookCover.HeightRequest = 275;
 
             BookCover.Source = edition.getImgURL();
+        }
+
+        private void Link_Clicked(object sender, EventArgs e)
+        {
+            string url = (sender as Button).Text;
+            OpenBrowser(url);
+        }
+
+        private async void OpenBrowser(string url)
+        {
+            try {
+                await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
+            } catch (Exception e) {
+                await DisplayAlert("Unable to open browser", e.Message, "Ok");
+            }
         }
     }
 }

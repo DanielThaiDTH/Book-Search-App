@@ -15,14 +15,21 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
+                                <StackLayout HorizontalOptions="StartAndExpand">
+                                    
                                 <Label Text="{Binding title}"
                                        TextColor="DarkBlue"
                                        FontAttributes="Bold"
                                        FontSize="15"/>
                                 <Label x:Name="AuthorList"/>
-                                <Label Text="{Binding number_of_pages, StringFormat='Number of Pages: {0} pages'}"/>
-                                <Label Text="{Binding publishers_list[0]}"/>
-                                <Label Text="{Binding publish_places_list[0]}"/>
+                                <Label Text="{Binding number_of_pages, StringFormat='Pages: {0} pages'}"/>
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="EndAndExpand">
+                                    <Label Text="{Binding publishers_list[0]}"
+                                           HorizontalTextAlignment="End"/>
+                                    <Label Text="{Binding publish_places_list[0]}"
+                                           HorizontalTextAlignment="End"/>
+                                </StackLayout>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

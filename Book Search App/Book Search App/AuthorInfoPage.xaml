@@ -11,6 +11,8 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
+        <ScrollView>
+            
         <StackLayout Orientation="Vertical">
             <StackLayout Orientation="Horizontal">
                 <ffimage:CachedImage x:Name="AuthorImage"
@@ -41,5 +43,6 @@
             <Label Text="Biography" Style="{StaticResource HeaderText}"/>
             <Label x:Name="Bio_Text"/>
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -24,9 +24,9 @@
             <Label Text="Your Saved Books and Authors"
                    FontAttributes="Bold"
                    FontSize="18"
-                   FlexLayout.Grow="0.10"/>
+                   FlexLayout.Basis="8%"/>
             <Frame BorderColor="DarkBlue"
-                   FlexLayout.Grow="0.7">
+                   FlexLayout.Basis="82%">
                 <StackLayout Orientation="Horizontal">
                     <ListView x:Name="SavedWorksList"
                               RowHeight="80"
@@ -111,7 +111,8 @@
             </Frame>
             <FlexLayout FlowDirection="LeftToRight"
                         Direction="Row"
-                        FlexLayout.Grow="0.10">
+                        
+                        FlexLayout.Basis="10%">
                 <Button x:Name="BooksButton"  Text="Books" 
                         FlexLayout.Grow="0.5"
                         Clicked="BooksButton_Clicked"/>
