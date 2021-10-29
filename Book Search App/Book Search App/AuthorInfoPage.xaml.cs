@@ -12,7 +12,7 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AuthorInfoPage : ContentPage
     {
-        BookInfoManager infoManager;
+        InfoManager infoManager;
         Author author;
         public Author AuthorInfo => author;
 
@@ -32,14 +32,14 @@ namespace Book_Search_App
             }
         }
 
-        public AuthorInfoPage(string key, BookInfoManager bim)
+        public AuthorInfoPage(string key, InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
             GetInfo(key);
         }
 
-        public AuthorInfoPage(Author a, BookInfoManager bim)
+        public AuthorInfoPage(Author a, InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
@@ -51,7 +51,19 @@ namespace Book_Search_App
             else
                 IsSaved = false;
         }
-        
+
+        protected override void OnAppearing()
+        {
+            if (author != null) {
+                if (infoManager.Authors.Contains(author))
+                    IsSaved = true;
+                else
+                    IsSaved = false;
+            }
+
+            base.OnAppearing();
+        }
+
         private async void GetInfo(string key)
         {
             author = await App.NetManager.queryAuthor(key);

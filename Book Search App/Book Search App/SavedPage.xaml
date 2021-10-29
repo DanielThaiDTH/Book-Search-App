@@ -69,7 +69,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <ListView x:Name="SavedAuthorsList"
-                              RowHeight="50"
+                              RowHeight="80"
                               ItemSelected="SavedAuthorsList_ItemSelected">
                         <ListView.Header>
                             <Label Text="Authors"

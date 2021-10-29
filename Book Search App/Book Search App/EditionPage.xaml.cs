@@ -12,7 +12,7 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditionPage : ContentPage
     {
-        readonly BookInfoManager infoManager;
+        readonly InfoManager infoManager;
         EditionInfo edition;
         public EditionInfo EditionInformation
         {
@@ -22,14 +22,14 @@ namespace Book_Search_App
             }
         }
 
-        public EditionPage(EditionInfo ed, BookInfoManager bim)
+        public EditionPage(EditionInfo ed, InfoManager bim)
         {
             InitializeComponent();
             edition = ed;
             infoManager = bim;
         }
 
-        public EditionPage(string key, BookInfoManager bim)
+        public EditionPage(string key, InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;

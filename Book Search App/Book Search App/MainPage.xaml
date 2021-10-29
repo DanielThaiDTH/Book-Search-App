@@ -37,7 +37,35 @@
                    IsVisible="False"
                    CornerRadius="5"
                    MinimumHeightRequest="150">
-                <Grid>
+                <TableView Intent="Settings">
+                    <TableRoot>
+                        <TableSection Title="Book Search Options">
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <RadioButton Content="Regular"
+                                                 IsChecked="True"
+                                                 FontSize="13"
+                                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                                    <RadioButton Content="Title"
+                                                 FontSize="13"
+                                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                                    <RadioButton Content="Author"
+                                                 FontSize="13"
+                                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                                    <RadioButton Content="ISBN"
+                                                 FontSize="13"
+                                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection Title="Search Type">
+                            <SwitchCell Text="Search For Author"
+                                        On="False"
+                                        OnChanged="SwitchCell_OnChanged"/>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+                <!--<Grid>
                     <Label Text="Search Type" 
                            FontSize="15"
                            FontAttributes="Bold"
@@ -75,7 +103,7 @@
                               IsChecked="False"
                               CheckedChanged="AuthorOptionCheck_CheckedChanged"
                               Grid.Column="1"/>
-                </Grid>
+                </Grid>-->
             </Frame>
         </StackLayout>
         <ListView x:Name="SearchResultsList" 

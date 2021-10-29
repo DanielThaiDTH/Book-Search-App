@@ -13,12 +13,12 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditionListPage : ContentPage
     {
-        readonly BookInfoManager infoManager;
+        readonly InfoManager infoManager;
         IDictionary<string, EditionSummary> editions;
         ObservableCollection<EditionSummary> edition_list;
         public ObservableCollection<EditionSummary> EditionList => edition_list;
 
-        public EditionListPage(IList<string> keys, BookInfoManager bim)
+        public EditionListPage(IList<string> keys, InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;

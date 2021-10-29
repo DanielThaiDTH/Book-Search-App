@@ -32,12 +32,12 @@ namespace Book_Search_App
             }
         }
 
-        BookInfoManager infoManager;
+        InfoManager infoManager;
 
         public App()
         {
             InitializeComponent();
-            infoManager = new BookInfoManager();
+            infoManager = new InfoManager();
             InitializeDB(infoManager);
 
             //Seems to fix the issue with ListView appearing, could be 
@@ -61,7 +61,7 @@ namespace Book_Search_App
             MainPage.Navigation.PushAsync(new SavedPage(infoManager));
         }
 
-        private async void InitializeDB(BookInfoManager im)
+        private async void InitializeDB(InfoManager im)
         {
             im.Authors = await Database.InitAuthorsTable();
             im.Saved_Works = await Database.InitWorksTable();

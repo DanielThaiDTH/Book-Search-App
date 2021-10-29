@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Book_Search_App
 {
-    public class BookInfoManager
+    public class InfoManager
     {
         //Search results
         ObservableCollection<BookSearchInfo> search_results;
@@ -72,7 +72,7 @@ namespace Book_Search_App
         PreviousQuery previous;
 
 
-        public BookInfoManager()
+        public InfoManager()
         {
             saved_works = new ObservableCollection<WorkInfo>();
             search_results = new ObservableCollection<BookSearchInfo>();

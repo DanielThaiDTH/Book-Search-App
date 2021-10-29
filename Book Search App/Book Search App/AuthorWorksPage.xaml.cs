@@ -12,8 +12,8 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AuthorWorksPage : ContentPage
     {
-        BookInfoManager infoManager;
-        public AuthorWorksPage(string key, BookInfoManager im, string name = "")
+        InfoManager infoManager;
+        public AuthorWorksPage(string key, InfoManager im, string name = "")
         {
             InitializeComponent();
             infoManager = im;
@@ -22,7 +22,7 @@ namespace Book_Search_App
             GetInfo(key);
         }
 
-        public AuthorWorksPage(BookInfoManager im, string name="")
+        public AuthorWorksPage(InfoManager im, string name="")
         {
             InitializeComponent();
             infoManager = im;

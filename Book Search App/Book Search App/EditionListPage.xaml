@@ -10,7 +10,7 @@
                    FontAttributes="Bold"/>
             <ListView x:Name="EditionListView"
                       ItemTapped="EditionListView_ItemTapped"
-                      RowHeight="80">
+                      RowHeight="85">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

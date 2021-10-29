@@ -44,13 +44,13 @@
                  </StackLayout>
             </StackLayout>
             <Label Text="Name" Style="{StaticResource HeaderText}"/>
-            <Label x:Name="Name_Text" Margin="0,0,0,10"/>
+            <Label x:Name="Name_Text" Margin="5,0,0,10"/>
             <Label Text="Date of Birth" Style="{StaticResource HeaderText}"/>
-            <Label x:Name="DOB_Text" Margin="0,0,0,10"/>
+            <Label x:Name="DOB_Text" Margin="5,0,0,10"/>
             <Label x:Name="DODHeader" Text="Date of Death" Style="{StaticResource HeaderText}"/>
-            <Label x:Name="DOD_Text" Margin="0,0,0,10"/>
+            <Label x:Name="DOD_Text" Margin="5,0,0,10"/>
             <Label Text="Biography" Style="{StaticResource HeaderText}"/>
-            <Label x:Name="Bio_Text"/>
+            <Label x:Name="Bio_Text" Margin="5,0,0,5"/>
         </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -13,8 +13,8 @@ namespace Book_Search_App
     {
         string query;
         bool isAuthorSearch = false;
-        BookInfoManager infoManager;
-        public MainPage(BookInfoManager bim)
+        InfoManager infoManager;
+        public MainPage(InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
@@ -130,11 +130,10 @@ namespace Book_Search_App
             }
         }
 
-        private void AuthorOptionCheck_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private void SwitchCell_OnChanged(object sender, ToggledEventArgs e)
         {
-            CheckBox check = (CheckBox)sender;
-            isAuthorSearch = check.IsChecked;
+            SwitchCell check = (SwitchCell)sender;
+            isAuthorSearch = check.On;
         }
-
     }//Class
 }

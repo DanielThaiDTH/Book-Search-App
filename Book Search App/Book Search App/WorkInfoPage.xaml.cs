@@ -14,7 +14,7 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WorkInfoPage : ContentPage, INotifyPropertyChanged
     {
-        readonly BookInfoManager infoManager;
+        readonly InfoManager infoManager;
         private IList<string> author_list = new List<string>();
 
         WorkInfo info;
@@ -47,7 +47,7 @@ namespace Book_Search_App
         public WorkInfoPage(string key, 
                             IList<string> authors,
                             IList<string> edition_keys,
-                            BookInfoManager bim)
+                            InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
@@ -56,7 +56,7 @@ namespace Book_Search_App
             getInfo(key, edition_keys);
         }
 
-        public WorkInfoPage(WorkInfo old_info, BookInfoManager bim)
+        public WorkInfoPage(WorkInfo old_info, InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
@@ -68,6 +68,17 @@ namespace Book_Search_App
                 IsSaved = false;
 
             setDisplay();
+        }
+
+        protected override void OnAppearing()
+        {
+            if (info != null) {
+                if (infoManager.Saved_Works.Contains(info))
+                    IsSaved = true;
+                else
+                    IsSaved = false;
+            }
+            base.OnAppearing();
         }
 
         private async void getInfo(string key, IList<string> edition_keys)

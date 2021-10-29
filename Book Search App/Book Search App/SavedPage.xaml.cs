@@ -18,7 +18,7 @@ namespace Book_Search_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SavedPage : ContentPage
     {
-        BookInfoManager infoManager;
+        InfoManager infoManager;
         SavedTabOption selected;
         public SavedTabOption SelectedTab
         {
@@ -41,7 +41,7 @@ namespace Book_Search_App
             }
         }
 
-        public SavedPage(BookInfoManager bim)
+        public SavedPage(InfoManager bim)
         {
             InitializeComponent();
             infoManager = bim;
